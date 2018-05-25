@@ -27,6 +27,10 @@ class SignupActivity : AppCompatActivity() {
         btnSignUp_SU.setOnClickListener {
             handleSignUp()
         }
+        toLogin_SU.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     fun handleSignUp() {

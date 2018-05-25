@@ -10,37 +10,43 @@
         android:id="@+id/email_SU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="159dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="159dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/password_SU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="231dp" />
+        app:layout_constraintStart_toStartOf="@+id/email_SU"
+        app:layout_constraintTop_toBottomOf="@+id/email_SU" />
 
     <EditText
         android:id="@+id/passwordConf_SU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
         android:ems="10"
         android:hint="Confirm Password"
         android:inputType="textPassword"
-        tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="296dp" />
+        app:layout_constraintStart_toStartOf="@+id/password_SU"
+        app:layout_constraintTop_toBottomOf="@+id/password_SU" />
 
     <Button
         android:id="@+id/signUp_SU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
         android:text="Sign Up "
-        tools:layout_editor_absoluteX="147dp"
-        tools:layout_editor_absoluteY="377dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordConf_SU" />
 </android.support.constraint.ConstraintLayout>

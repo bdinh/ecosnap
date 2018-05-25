@@ -76,4 +76,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_ecosnap_icon_fullname" />
+
 </android.support.constraint.ConstraintLayout>

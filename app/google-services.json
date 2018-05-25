@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "1010428999391",
+    "firebase_url": "https://ecosnap-awb.firebaseio.com",
+    "project_id": "ecosnap-awb",
+    "storage_bucket": "ecosnap-awb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010428999391:android:a18b66897174654a",
+        "android_client_info": {
+          "package_name": "com.ecosnap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1010428999391-a5nspt77dahivmauqurh0cf2j9cq57qr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecosnap",
+            "certificate_hash": "346d05e7e87018db16424ae3058556c1ab56cd89"
+          }
+        },
+        {
+          "client_id": "1010428999391-8dscemt097m6hsudcahnkjdu3785p3oi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecosnap",
+            "certificate_hash": "65447e4f56c61f41d87fb2489edc2a00fa0c2f64"
+          }
+        },
+        {
+          "client_id": "1010428999391-nip4oqv5iuhia9edma17efjgo06dvufj.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1010428999391-nip4oqv5iuhia9edma17efjgo06dvufj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ333gsjr2hDsdUO_EdWRIALJ50CfPSzA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1010428999391-nip4oqv5iuhia9edma17efjgo06dvufj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

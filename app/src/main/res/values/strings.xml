@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">EcoSnap</string>
+
+    <string name="bottomnav_title_0">Locate</string>
+    <string name="bottomnav_title_1">History</string>
+    <string name="bottomnav_title_2">Camera</string>
+    <string name="bottomnav_title_3">Profile</string>
 </resources>

@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/password_SU" />
 
     <Button
-        android:id="@+id/signUp_SU"
+        android:id="@+id/btnSignUp_SU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"

@@ -12,22 +12,48 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
+import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
+import com.ecosnap.Controller.Date
+import com.ecosnap.Controller.Item
+import com.ecosnap.Controller.RowAdapter
+import kotlinx.android.synthetic.main.fragment_history.*
 
-
-
-
-
-
-
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), HistoryFragment.HistoryListener {
     private lateinit var fbAuth: FirebaseAuth
+
+
+    private val item1 = Item("Plastic", 90, true, "https://4.imimg.com/data4/EU/YB/MY-6282801/normal-plastic-bottle-500x500.jpg")
+    private val item2 = Item("Glass", 80, true, "https://4.imimg.com/data4/EU/YB/MY-6282801/normal-plastic-bottle-500x500.jpg")
+    private val date1 = Date("Today", arrayOf(item1, item2))
+    private val date2 = Date("Yesterday", arrayOf(item1, item2))
+    private val list = arrayOf(date1, date2)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createBottomNav()
 
+//        recyclerView_History.setBackgroundColor(Color.BLUE)
+
+//        recyclerView_History.layoutManager = LinearLayoutManager(this)
+//        recyclerView_History.adapter = RowAdapter(this, list)
+//
+//        val bundle = Bundle()
+//        bundle.putParcelableArray("list", list)
+//        val history = HistoryFragment()
+//        history.arguments = bundle
+//        val fragTrans = fragmentManager.beginTransaction()
+//        fragTrans.add(R.id.frame, history).commit()
+//        Log.i("main", "test")
+
         initializeMainActivity()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
     }
 
     fun createBottomNav() {
@@ -48,11 +74,32 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.defaultBackgroundColor = fetchColor(R.color.colorPrimary)
         bottomNavigation.accentColor = fetchColor(R.color.navSelect)
         bottomNavigation.inactiveColor = fetchColor(R.color.navUnselect)
+        // Team decision
+        //bottomNavigation.titleState = AHBottomNavigation.TitleState.ALWAYS_SHOW
 
         bottomNavigation.setOnTabSelectedListener { position, wasSelected ->
-            // Do something cool here...
+            // Navbar views to be implemented...
+//            when (position) {
+//                // 0 -> beginLocateView()
+//                1 -> beginHistoryView()
+//                // 2 -> beginCameraView()
+//                // 3 -> beginProfileView()
+//            }
             true
         }
+    }
+
+    // bundle parcelable and pass into HistoryFragment
+    override fun beginHistoryView() {
+
+
+//        val bundle = Bundle()
+//        bundle.putParcelableArray("list", list)
+//        val history = HistoryFragment()
+//        history.arguments = bundle
+//        val fragTrans = fragmentManager.beginTransaction()
+//        fragTrans.replace(R.id.frame, history).commit()
+//        Log.i("main", "test")
     }
 
     private fun fetchColor(@ColorRes color: Int): Int {

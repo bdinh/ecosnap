@@ -1,5 +1,7 @@
 package com.ecosnap.Views
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
@@ -19,7 +21,7 @@ import android.support.annotation.ColorRes
 
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), LocateFragment.OnLocateFragmentInteractionListener {
     private lateinit var fbAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,14 +52,22 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.inactiveColor = fetchColor(R.color.navUnselect)
 
         bottomNavigation.setOnTabSelectedListener { position, wasSelected ->
-            // Do something cool here...
-            if (position == 0 && wasSelected) {
-                val intent = Intent(this, MapsActivity::class.java)
-                startActivity(intent)
+            when(position) {
+                0 -> initLocateFragment()
             }
+
+            // Do something cool here...
             true
         }
     }
+
+    fun initLocateFragment() {
+        val transaction = fragmentManager.beginTransaction()
+        val locateFragment = LocateFragment()
+        transaction.replace(R.id.frame, locateFragment)
+        transaction.commit()
+    }
+
 
     private fun fetchColor(@ColorRes color: Int): Int {
         return ContextCompat.getColor(this, color)

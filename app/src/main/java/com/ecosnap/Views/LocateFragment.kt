@@ -1,45 +1,58 @@
 package com.ecosnap.Views
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Fragment
+import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.ecosnap.R
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationServices
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
 
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class LocateFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
+                        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+                        LocationListener {
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 
-    override fun onMarkerClick(p0: Marker?) = false
-
     private lateinit var map: GoogleMap
     private lateinit var fCL: FusedLocationProviderClient
     private lateinit var lastLocation: Location
+    private lateinit var thisActivity: Activity
+    private lateinit var ctx: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps)
+        thisActivity = MainActivity()
+        ctx = MainActivity()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
+        val view = inflater?.inflate(R.layout.activity_maps, container, false)
+        val mapFragment = childFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        fCL = LocationServices.getFusedLocationProviderClient(this)
+        fCL = LocationServices.getFusedLocationProviderClient(thisActivity)
+
     }
 
     /**
@@ -59,23 +72,51 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         map.setOnMarkerClickListener(this)
 
         setUpMap()
+        val mGoogleApiClient = GoogleApiClient.Builder(ctx)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build()
+        mGoogleApiClient.connect()
+    }
+
+    override fun onMarkerClick(p0: Marker?) = false
+
+    override fun onConnected(p0: Bundle?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onConnectionFailed(p0: ConnectionResult) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onLocationChanged(p0: Location?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun setUpMap() {
-        if (ActivityCompat.checkSelfPermission(this,
+        if (ActivityCompat.checkSelfPermission(ctx,
                         android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
+            ActivityCompat.requestPermissions(thisActivity,
                     arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
             return
         }
         map.isMyLocationEnabled = true
 
-        fCL.lastLocation.addOnSuccessListener(this) {location ->
+        fCL.lastLocation.addOnSuccessListener(thisActivity) {location ->
             if (location != null) {
                 lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
-                map.animateCamera(CameraUpdateFactory.newLatLng(currentLatLng))
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
             }
         }
+    }
+
+    interface OnLocateFragmentInteractionListener {
+
     }
 }

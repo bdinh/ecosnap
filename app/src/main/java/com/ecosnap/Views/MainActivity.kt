@@ -51,6 +51,10 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigation.setOnTabSelectedListener { position, wasSelected ->
             // Do something cool here...
+            if (position == 0 && wasSelected) {
+                val intent = Intent(this, MapsActivity::class.java)
+                startActivity(intent)
+            }
             true
         }
     }

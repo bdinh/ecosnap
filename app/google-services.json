@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1010428999391-p9esv0jpdcub6q9m4ljr2mtnsodvfegt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecosnap",
+            "certificate_hash": "268393f4e5aabaaeb004f41f06c970a4722d70be"
+          }
+        },
+        {
           "client_id": "1010428999391-a5nspt77dahivmauqurh0cf2j9cq57qr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -1,33 +1,29 @@
 package com.ecosnap.Views
 
-import android.content.Intent
-import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.ecosnap.R
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_main.*
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
+import com.ecosnap.*
+import com.ecosnap.Model.DateHistory
+import com.ecosnap.Model.History
+import com.ecosnap.Model.HistoryItem
+import com.ecosnap.fragments.HistoryFragment
 
+class MainActivity : AppCompatActivity(), HistoryFragment.OnHistoryFragmentInteractionListener {
+    override fun onHistoryDetailedView() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
-
-
-
-
-
-class MainActivity : AppCompatActivity() {
-    private lateinit var fbAuth: FirebaseAuth
-
+//    private lateinit var fbAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createBottomNav()
-
-        initializeMainActivity()
+//        initializeMainActivity()
     }
 
     fun createBottomNav() {
@@ -50,25 +46,63 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.inactiveColor = fetchColor(R.color.navUnselect)
 
         bottomNavigation.setOnTabSelectedListener { position, wasSelected ->
+
+            when(position) {
+                0 -> initLocateFragment()
+                1 -> initHistoryFragment()
+                2 -> initCameraFragment()
+                3 -> initProfileFragment()
+            }
+
+
+
             // Do something cool here...
             true
         }
     }
 
-    private fun fetchColor(@ColorRes color: Int): Int {
+    fun initProfileFragment() {
+
+    }
+
+    fun initCameraFragment() {
+
+    }
+    fun initHistoryFragment() {
+        val historyItem_1 = HistoryItem("Soda Can", R.drawable.sodacan, "74%", R.drawable.ic_pass)
+        val historyItem_2 = HistoryItem("Glass Bottle", R.drawable.glassbottle, "87%", R.drawable.ic_pass)
+        val historyItem_3 = HistoryItem("Stuffed Animal", R.drawable.teddybear, "91%", R.drawable.ic_reject)
+        val dateHistory_1 = DateHistory("Today", arrayOf(historyItem_1, historyItem_2, historyItem_3))
+        val dateHistory_2 = DateHistory("Yesterday", arrayOf(historyItem_1, historyItem_2, historyItem_3))
+        val history = History(arrayOf(dateHistory_1, dateHistory_2))
+        val args = Bundle()
+        args.putSerializable("history", history)
+        val historyFragment = HistoryFragment()
+        historyFragment.arguments = args
+        val transaction = fragmentManager.beginTransaction()
+        transaction.replace(R.id.frame, historyFragment)
+        transaction.commit()
+    }
+
+    fun initLocateFragment() {
+
+    }
+
+
+    fun fetchColor(@ColorRes color: Int): Int {
         return ContextCompat.getColor(this, color)
     }
 
     fun initializeMainActivity() {
-        fbAuth = FirebaseAuth.getInstance()
-        btnLogout_M.setOnClickListener {
-            handleSignOut()
-        }
+//        fbAuth = FirebaseAuth.getInstance()
+//        btnLogout_M.setOnClickListener {
+//            handleSignOut()
+//        }
     }
 
-    fun handleSignOut() {
-        fbAuth.signOut()
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-    }
+//    fun handleSignOut() {
+//        fbAuth.signOut()
+//        val intent = Intent(this, LoginActivity::class.java)
+//        startActivity(intent)
+//    }
 }

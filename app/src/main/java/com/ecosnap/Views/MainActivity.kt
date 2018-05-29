@@ -13,13 +13,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
 
-
-
-
-
-
-
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener {
     private lateinit var fbAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,12 +44,26 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.inactiveColor = fetchColor(R.color.navUnselect)
 
         bottomNavigation.setOnTabSelectedListener { position, wasSelected ->
+            when(position) {
+                3 -> initProfileFragment()
+            }
+
             // Do something cool here...
             true
         }
     }
 
-    private fun fetchColor(@ColorRes color: Int): Int {
+    fun initProfileFragment() {
+        val args = Bundle()
+        args.putString("profile", "Aaron Nguyen")
+        val profileFragment = ProfileFragment()
+        profileFragment.arguments = args
+        val transaction = fragmentManager.beginTransaction()
+        transaction.replace(R.id.frame, profileFragment)
+        transaction.commit()
+    }
+
+    fun fetchColor(@ColorRes color: Int): Int {
         return ContextCompat.getColor(this, color)
     }
 

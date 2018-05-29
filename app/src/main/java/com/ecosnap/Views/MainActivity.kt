@@ -21,7 +21,7 @@ import android.support.annotation.ColorRes
 
 
 
-class MainActivity : AppCompatActivity(), LocateFragment.OnLocateFragmentInteractionListener {
+class MainActivity : AppCompatActivity() {
     private lateinit var fbAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +53,8 @@ class MainActivity : AppCompatActivity(), LocateFragment.OnLocateFragmentInterac
 
         bottomNavigation.setOnTabSelectedListener { position, wasSelected ->
             when(position) {
-                0 -> initLocateFragment()
+                0 -> {val intent = Intent(this, MapsActivity::class.java)
+                startActivity(intent)}
             }
 
             // Do something cool here...
@@ -62,10 +63,7 @@ class MainActivity : AppCompatActivity(), LocateFragment.OnLocateFragmentInterac
     }
 
     fun initLocateFragment() {
-        val transaction = fragmentManager.beginTransaction()
-        val locateFragment = LocateFragment()
-        transaction.replace(R.id.frame, locateFragment)
-        transaction.commit()
+
     }
 
 

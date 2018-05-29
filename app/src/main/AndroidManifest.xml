@@ -8,6 +8,13 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+
+
+
 
     <application
         android:allowBackup="true"
@@ -40,7 +47,6 @@
         <activity
             android:name=".Views.MapsActivity"
             android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".Views.MapsFragment" />
     </application>
 
 </manifest>

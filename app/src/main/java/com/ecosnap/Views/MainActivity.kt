@@ -11,6 +11,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
+import com.ecosnap.Model.Profile
 
 class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener {
     private lateinit var fbAuth: FirebaseAuth
@@ -53,9 +54,11 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initProfileFragment() {
+        val profileExample = Profile("Aaron Nguyen", "Recycling newbie here! It’s about time that I started giving a shit.", 0)
         val args = Bundle()
-        args.putString("name", "Aaron Nguyen")
-        args.putString("descr", "Recycling newbie here! It’s about time that I started giving a shit.")
+//        args.putString("name", "Aaron Nguyen")
+//        args.putString("descr", "Recycling newbie here! It’s about time that I started giving a shit.")
+        args.putSerializable("user", profileExample)
         val profileFragment = ProfileFragment()
         profileFragment.arguments = args
         val transaction = supportFragmentManager.beginTransaction()

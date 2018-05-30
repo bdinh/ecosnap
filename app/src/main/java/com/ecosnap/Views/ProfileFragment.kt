@@ -6,20 +6,24 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.ecosnap.Model.Profile
 import com.ecosnap.R
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class ProfileFragment : Fragment() {
     private val ITEMS = 5
-    private var name: String = ""
-    private var descr: String = ""
+    private lateinit var profile: Profile
+//    private var name: String = ""
+//    private var descr: String = ""
+//    private var img: Int = 0
     private var listener: OnProfileFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            name = it.getSerializable("name") as String
-            descr = it.getSerializable("descr") as String
+            profile = it.getSerializable("user") as Profile
+//            name = it.getSerializable("name") as String
+//            descr = it.getSerializable("descr") as String
         }
 
     }
@@ -27,16 +31,18 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         arguments?.let {
-            name = it.getSerializable("name") as String
-            descr = it.getSerializable("descr") as String
+            profile = it.getSerializable("user") as Profile
+//            name = it.getSerializable("name") as String
+//            descr = it.getSerializable("descr") as String
         }
-        // Inflate the layout for this fragment
+
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         val mAdapter = ProfilePagerAdapter(fragmentManager)
         view.vp_profile.adapter = mAdapter
         view.tabs_profile.setupWithViewPager(view.vp_profile)
-        view.txt_profile_title.text = name
-        view.txt_profile_bio.text = descr
+        view.txt_profile_title.text = profile.name //name
+        view.txt_profile_bio.text = profile.descr //descr
+        // view.img_profile_pict.setImageDrawable(profile.img)
         return view
     }
 
@@ -55,6 +61,5 @@ class ProfileFragment : Fragment() {
     }
 
     interface OnProfileFragmentInteractionListener {
-
     }
 }

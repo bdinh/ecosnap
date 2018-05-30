@@ -9,9 +9,9 @@ class ProfilePagerAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) 
 
     override fun getItem(position: Int): Fragment? {
         when (position) {
-            0 -> return DayFragment().newInstance("test1")
-            1 -> return DayFragment().newInstance("test2")
-            else -> return DayFragment().newInstance("test3")
+            0 -> return DayFragment().newInstance("Day")
+            1 -> return WeekFragment().newInstance("Week")
+            else -> return MonthFragment().newInstance("Month")
         }
 //        return DayFragment().newInstance("test1")
     }
@@ -21,6 +21,11 @@ class ProfilePagerAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) 
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return super.getPageTitle(position)
+        when (position) {
+            0 -> return "Day"
+            1 -> return "Week"
+            else -> return "Month"
+        }
+//        return super.getPageTitle(position)
     }
 }

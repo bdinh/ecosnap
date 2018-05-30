@@ -2,12 +2,12 @@ package com.ecosnap.Views
 
 import android.view.ViewGroup
 import android.util.SparseArray
-import android.app.Fragment
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 
 
-abstract class SmartFragmentStatePagerAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {
+abstract class SmartFragmentStatePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     // Sparse array to keep track of registered fragments in memory
     private val registeredFragments = SparseArray<Fragment>()
 

@@ -15,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "1010428999391-a5nspt77dahivmauqurh0cf2j9cq57qr.apps.googleusercontent.com",
+          "client_id": "1010428999391-hj5kq50bj661n745smi4ki3e9pkts18i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ecosnap",
@@ -23,7 +23,11 @@
           }
         },
         {
-          "client_id": "1010428999391-8dscemt097m6hsudcahnkjdu3785p3oi.apps.googleusercontent.com",
+          "client_id": "1010428999391-2uvapmc1819su2bofkqqv7l9rrvtctk2.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1010428999391-gj7u68ckjndlpmid2oc54u0tkmjss1ki.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ecosnap",
@@ -31,17 +35,13 @@
           }
         },
         {
-          "client_id": "1010428999391-nip4oqv5iuhia9edma17efjgo06dvufj.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "1010428999391-nip4oqv5iuhia9edma17efjgo06dvufj.apps.googleusercontent.com",
+          "client_id": "1010428999391-2uvapmc1819su2bofkqqv7l9rrvtctk2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDJ333gsjr2hDsdUO_EdWRIALJ50CfPSzA"
+          "current_key": "AIzaSyDKmhHNHD_Mavp4JnWZONuzUC8mXhQPkaI"
         }
       ],
       "services": {
@@ -52,7 +52,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1010428999391-nip4oqv5iuhia9edma17efjgo06dvufj.apps.googleusercontent.com",
+              "client_id": "1010428999391-2uvapmc1819su2bofkqqv7l9rrvtctk2.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

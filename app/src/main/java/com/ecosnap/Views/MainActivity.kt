@@ -1,7 +1,6 @@
 package com.ecosnap.Views
 
 import android.content.Intent
-import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -55,10 +54,11 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
 
     fun initProfileFragment() {
         val args = Bundle()
-        args.putString("profile", "Aaron Nguyen")
+        args.putString("name", "Aaron Nguyen")
+        args.putString("descr", "Recycling newbie here! It’s about time that I started giving a shit.")
         val profileFragment = ProfileFragment()
         profileFragment.arguments = args
-        val transaction = fragmentManager.beginTransaction()
+        val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.frame, profileFragment)
         transaction.commit()
     }

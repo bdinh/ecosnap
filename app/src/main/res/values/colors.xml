@@ -6,4 +6,6 @@
     <color name="offWhite">#f2f2f2</color>
     <color name="navSelect">#ffffff</color>
     <color name="navUnselect">#96ffffff</color>
+    <color name="darkGray">#707070</color>
+    <color name="lightGray">#e0e0e0</color>
 </resources>

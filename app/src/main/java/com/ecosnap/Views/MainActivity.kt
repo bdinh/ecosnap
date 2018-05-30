@@ -16,9 +16,8 @@ import com.ecosnap.Model.HistoryItem
 import com.ecosnap.fragments.HistoryFragment
 
 class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, HistoryFragment.OnHistoryFragmentInteractionListener {
-      private lateinit var fbAuth: FirebaseAuth
+//      private lateinit var fbAuth: FirebaseAuth
 
-  
       override fun onHistoryDetailedView() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

@@ -13,7 +13,11 @@ import com.ecosnap.*
 import com.ecosnap.Model.DateHistory
 import com.ecosnap.Model.History
 import com.ecosnap.Model.HistoryItem
+import com.ecosnap.R.id.btnLogout_M
 import com.ecosnap.fragments.HistoryFragment
+import com.ecosnap.fragments.ProfileFragment
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, HistoryFragment.OnHistoryFragmentInteractionListener {
       private lateinit var fbAuth: FirebaseAuth
@@ -28,7 +32,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createBottomNav()
-//        initializeMainActivity()
+        initializeMainActivity()
     }
 
     fun createBottomNav() {
@@ -63,14 +67,13 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initProfileFragment() {
-        val profileExample = Profile("Aaron Nguyen", "Recycling newbie here! It’s about time that I started giving a shit.", 0)
+        val profileExample = Profile("Aaron Nguyen", "Recycling newbie here! It’s about time that I started to care.", 0)
         val args = Bundle()
-//        args.putString("name", "Aaron Nguyen")
-//        args.putString("descr", "Recycling newbie here! It’s about time that I started giving a shit.")
         args.putSerializable("user", profileExample)
         val profileFragment = ProfileFragment()
         profileFragment.arguments = args
         val transaction = supportFragmentManager.beginTransaction()
+        transaction.addToBackStack(null)
         transaction.replace(R.id.frame, profileFragment)
         transaction.commit()
     }
@@ -91,6 +94,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         val historyFragment = HistoryFragment()
         historyFragment.arguments = args
         val transaction = fragmentManager.beginTransaction()
+        transaction.addToBackStack(null)
         transaction.replace(R.id.frame, historyFragment)
         transaction.commit()
     }
@@ -104,15 +108,15 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initializeMainActivity() {
-//        fbAuth = FirebaseAuth.getInstance()
-//        btnLogout_M.setOnClickListener {
-//            handleSignOut()
-//        }
+        fbAuth = FirebaseAuth.getInstance()
+        btnLogout_M.setOnClickListener {
+            handleSignOut()
+        }
     }
 
-//    fun handleSignOut() {
-//        fbAuth.signOut()
-//        val intent = Intent(this, LoginActivity::class.java)
-//        startActivity(intent)
-//    }
+    fun handleSignOut() {
+        fbAuth.signOut()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+    }
 }

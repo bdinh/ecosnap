@@ -6,6 +6,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.GoogleMap
 
 fun CheckGooglePlayServices(ctx: Context, activity: Activity): Boolean {
     val googleAPI = GoogleApiAvailability.getInstance()
@@ -28,3 +29,13 @@ fun buildGoogleApiClient(ctx: Context, connCB: GoogleApiClient.ConnectionCallbac
             .build()
     mGoogleApiClient.connect()
 }
+
+//fun getNearbyRecycleCneters(map: GoogleMap) {
+//    map.clear()
+//    val recycleCenters = "Recycle Centers"
+//    val url: String = getUrl(latitude, longitude, recycleCenters)
+//    val DataTransfer = []
+//    DataTransfer[0] = map
+//    DataTransfer[1] = url
+//    val nearbyRecycleCenters = GetNearByPlacesData()
+//}

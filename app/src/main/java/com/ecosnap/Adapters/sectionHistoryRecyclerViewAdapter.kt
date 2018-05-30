@@ -1,0 +1,38 @@
+package com.ecosnap.Adapters
+
+import android.content.Context
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import com.ecosnap.Model.History
+import com.ecosnap.R
+import kotlinx.android.synthetic.main.section_history_view_list.view.*
+
+class SectionHistoryRecyclerViewAdapter(val context: Context, val historyData: History) : RecyclerView.Adapter<CustomSectionHistoryViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomSectionHistoryViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val cellForRow = layoutInflater.inflate(R.layout.section_history_view_list, parent, false)
+        return CustomSectionHistoryViewHolder(cellForRow)
+    }
+
+    override fun getItemCount(): Int {
+        return this.historyData.data.size
+    }
+
+    override fun onBindViewHolder(holder: CustomSectionHistoryViewHolder, position: Int) {
+        val dateHistory = historyData.data.get(position)
+        holder.section_history_text_label.setText(dateHistory.label)
+        holder.section_history_recycler_view.layoutManager = GridLayoutManager(this.context, 2)
+        holder.section_history_recycler_view.adapter = HistoryRecyclerViewAdapter(dateHistory)
+    }
+
+}
+
+class CustomSectionHistoryViewHolder(val view: View) :RecyclerView.ViewHolder(view) {
+    val section_history_text_label: TextView = view.section_history_text_label
+    val section_history_recycler_view :RecyclerView = view.section_history_recycler_view
+}

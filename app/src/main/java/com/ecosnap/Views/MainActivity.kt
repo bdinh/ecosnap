@@ -1,5 +1,6 @@
 package com.ecosnap.Views
 
+import android.app.Fragment
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
+import android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import com.ecosnap.Model.Profile
 import com.ecosnap.*
 import com.ecosnap.Model.DateHistory
@@ -20,10 +22,10 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, HistoryFragment.OnHistoryFragmentInteractionListener {
-      private lateinit var fbAuth: FirebaseAuth
-
+    private lateinit var fbAuth: FirebaseAuth
+    private var backstackFlag = "curr"
   
-      override fun onHistoryDetailedView() {
+    override fun onHistoryDetailedView() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
   
@@ -72,16 +74,18 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         args.putSerializable("user", profileExample)
         val profileFragment = ProfileFragment()
         profileFragment.arguments = args
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.addToBackStack(null)
+        val fm = supportFragmentManager
+        fm.popBackStack(backstackFlag, POP_BACK_STACK_INCLUSIVE)
+        val transaction = fm.beginTransaction()
         transaction.replace(R.id.frame, profileFragment)
+        transaction.addToBackStack(backstackFlag)
         transaction.commit()
     }
 
     fun initCameraFragment() {
 
     }
-  
+
     fun initHistoryFragment() {
         val historyItem_1 = HistoryItem("Soda Can", R.drawable.sodacan, "74%", R.drawable.ic_pass)
         val historyItem_2 = HistoryItem("Glass Bottle", R.drawable.glassbottle, "87%", R.drawable.ic_pass)
@@ -93,9 +97,11 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         args.putSerializable("history", history)
         val historyFragment = HistoryFragment()
         historyFragment.arguments = args
-        val transaction = fragmentManager.beginTransaction()
-        transaction.addToBackStack(null)
+        val fm = supportFragmentManager
+        fm.popBackStack(backstackFlag, POP_BACK_STACK_INCLUSIVE)
+        val transaction = fm.beginTransaction()
         transaction.replace(R.id.frame, historyFragment)
+        transaction.addToBackStack(backstackFlag)
         transaction.commit()
     }
 

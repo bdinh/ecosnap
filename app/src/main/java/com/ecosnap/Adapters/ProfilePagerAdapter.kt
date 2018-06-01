@@ -1,8 +1,11 @@
-package com.ecosnap.Views
+package com.ecosnap.Adapters
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import com.ecosnap.fragments.DayFragment
+import com.ecosnap.fragments.MonthFragment
+import com.ecosnap.fragments.WeekFragment
 
 class ProfilePagerAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {
     private val ITEMS = 3
@@ -13,7 +16,6 @@ class ProfilePagerAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) 
             1 -> return WeekFragment().newInstance("Week")
             else -> return MonthFragment().newInstance("Month")
         }
-//        return DayFragment().newInstance("test1")
     }
 
     override fun getCount(): Int {

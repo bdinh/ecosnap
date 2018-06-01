@@ -1,4 +1,4 @@
-package com.ecosnap.Views
+package com.ecosnap.fragments
 
 
 import android.os.Bundle

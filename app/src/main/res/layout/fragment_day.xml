@@ -5,7 +5,7 @@
     android:id="@+id/frame_profile_day"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Views.DayFragment">
+    tools:context=".fragments.DayFragment">
 
     <ProgressBar
         android:id="@+id/progressBar3"

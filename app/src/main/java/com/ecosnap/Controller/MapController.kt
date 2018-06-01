@@ -109,16 +109,19 @@ class GetNearbyRecycleCenters: AsyncTask<Any, String, String>() {
     private lateinit var url: String
 
     override fun doInBackground(vararg objects: Any): String {
-        map = objects[0] as GoogleMap
-        url = objects[1] as String
+        var dataObj = objects[0] as HashMap<Int, Any>
+        var mapFromObj = dataObj[0]
+        var urlFromObj = dataObj[1]
+        Log.i("ECOSNAP.ERROR", urlFromObj.toString())
+        map = mapFromObj as GoogleMap
+        url = urlFromObj as String
         try {
             val downloadUrl = DownloadUrl()
             googlePlaceData = downloadUrl.readUrl(url)
-            return googlePlaceData
         } catch (e: Exception) {
             Log.i("ECOSNAP.ERROR Line 120", e.toString())
-            return ""
         }
+        return googlePlaceData
     }
 
     override fun onPostExecute(result: String) {
@@ -129,6 +132,7 @@ class GetNearbyRecycleCenters: AsyncTask<Any, String, String>() {
     }
 
     private fun showNearbyPlaces(nearbyPlacesList: List<HashMap<String, String>>) {
+        Log.i("ECOSNAP.ERROR", nearbyPlacesList.size.toString())
         for (i in nearbyPlacesList.indices) {
             var markerOptions = MarkerOptions()
             var googlePlace: HashMap<String, String> = nearbyPlacesList.get(i)
@@ -141,8 +145,6 @@ class GetNearbyRecycleCenters: AsyncTask<Any, String, String>() {
             markerOptions.title(placeName + " : " + vicinity)
             map.addMarker(markerOptions)
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-            map.moveCamera(CameraUpdateFactory.newLatLng(latLng))
-            map.animateCamera(CameraUpdateFactory.zoomTo(11f))
         }
     }
 }

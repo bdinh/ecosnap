@@ -26,7 +26,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
         private const val REQUEST_CHECK_SETTINGS = 2
-        private const val PROXIMITY_RADIUS = 100000
+        private const val PROXIMITY_RADIUS = 10000
+        private const val API_KEY = "AIzaSyBLgt9kCOa6jnHzUVhZuVU6x4J3COAt80Q"
+        private const val NEARBY_PLACE = "recycling+center"
     }
 
     private lateinit var map: GoogleMap
@@ -114,8 +116,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 currLocation = currentLatLng
                 Toast.makeText(this, currLocation.toString(), Toast.LENGTH_LONG).show()
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
-                var url = getUrl(currLocation.latitude, currLocation.longitude, "recycle center")
-                var dataTransfer = Array<Any>(2, {})
+                var url = getUrl(currLocation.latitude, currLocation.longitude, NEARBY_PLACE)
+                var dataTransfer = HashMap<Int, Any>()
                 dataTransfer[0] = map
                 dataTransfer[1] = url
                 var getNearbyRCenters = GetNearbyRecycleCenters()
@@ -163,9 +165,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         var googlePlacesUrl = StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?")
         googlePlacesUrl.append("location=" + lat + "," + lng)
         googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS)
-        googlePlacesUrl.append("&type=" + nearbyPlace)
+        googlePlacesUrl.append("&keyword=" + nearbyPlace)
         googlePlacesUrl.append("&sensor=true")
-        googlePlacesUrl.append("&key=" + "AIzaSyBLgt9kCOa6jnHzUVhZuVU6x4J3COAt80Q")
+        googlePlacesUrl.append("&key=" + API_KEY)
         return (googlePlacesUrl.toString())
     }
 }

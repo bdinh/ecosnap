@@ -1,6 +1,5 @@
 package com.ecosnap.Views
 
-import android.app.Fragment
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -15,7 +14,6 @@ import com.ecosnap.*
 import com.ecosnap.Model.DateHistory
 import com.ecosnap.Model.History
 import com.ecosnap.Model.HistoryItem
-import com.ecosnap.R.id.btnLogout_M
 import com.ecosnap.fragments.HistoryFragment
 import com.ecosnap.fragments.ProfileFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -23,8 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, HistoryFragment.OnHistoryFragmentInteractionListener {
     private lateinit var fbAuth: FirebaseAuth
-    private var backstackFlag = "curr"
-  
+
     override fun onHistoryDetailedView() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -75,10 +72,8 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         val profileFragment = ProfileFragment()
         profileFragment.arguments = args
         val fm = supportFragmentManager
-        fm.popBackStack(backstackFlag, POP_BACK_STACK_INCLUSIVE)
         val transaction = fm.beginTransaction()
         transaction.replace(R.id.frame, profileFragment)
-        transaction.addToBackStack(backstackFlag)
         transaction.commit()
     }
 
@@ -98,10 +93,8 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         val historyFragment = HistoryFragment()
         historyFragment.arguments = args
         val fm = supportFragmentManager
-        fm.popBackStack(backstackFlag, POP_BACK_STACK_INCLUSIVE)
         val transaction = fm.beginTransaction()
         transaction.replace(R.id.frame, historyFragment)
-        transaction.addToBackStack(backstackFlag)
         transaction.commit()
     }
 

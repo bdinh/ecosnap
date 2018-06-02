@@ -72,8 +72,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         map.setOnMarkerClickListener(this)
 
         setUpMap()
-
-
     }
 
     override fun onMarkerClick(p0: Marker?) = false
@@ -114,16 +112,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 lastLocation = location
                 var currentLatLng = LatLng(location.latitude, location.longitude)
                 currLocation = currentLatLng
-                Toast.makeText(this, currLocation.toString(), Toast.LENGTH_LONG).show()
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
-                var url = getUrl(currLocation.latitude, currLocation.longitude, NEARBY_PLACE)
-                var dataTransfer = HashMap<Int, Any>()
-                dataTransfer[0] = map
-                dataTransfer[1] = url
-                var getNearbyRCenters = GetNearbyRecycleCenters()
-                getNearbyRCenters.execute(dataTransfer)
+                getNearByRecyclingCenters(currLocation)
             }
         }
+        map.setOnCameraIdleListener {
+            //Removed map.clear()
+            //Map clear here causes instant map refresh on every little movement
+            val screenCenter = map.cameraPosition.target
+            getNearByRecyclingCenters(screenCenter)
+        }
+    }
+
+    private fun getNearByRecyclingCenters(location: LatLng) {
+        var url = getUrl(location.latitude, location.longitude, NEARBY_PLACE)
+        var dataTransfer = HashMap<Int, Any>()
+        dataTransfer[0] = map
+        dataTransfer[1] = url
+        var getNearbyRCenters = GetNearbyRecycleCenters()
+        getNearbyRCenters.execute(dataTransfer)
     }
 
     private fun startLocationUpdates() {

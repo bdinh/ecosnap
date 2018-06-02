@@ -112,7 +112,6 @@ class GetNearbyRecycleCenters: AsyncTask<Any, String, String>() {
         var dataObj = objects[0] as HashMap<Int, Any>
         var mapFromObj = dataObj[0]
         var urlFromObj = dataObj[1]
-        Log.i("ECOSNAP.ERROR", urlFromObj.toString())
         map = mapFromObj as GoogleMap
         url = urlFromObj as String
         try {
@@ -132,7 +131,6 @@ class GetNearbyRecycleCenters: AsyncTask<Any, String, String>() {
     }
 
     private fun showNearbyPlaces(nearbyPlacesList: List<HashMap<String, String>>) {
-        Log.i("ECOSNAP.ERROR", nearbyPlacesList.size.toString())
         for (i in nearbyPlacesList.indices) {
             var markerOptions = MarkerOptions()
             var googlePlace: HashMap<String, String> = nearbyPlacesList.get(i)

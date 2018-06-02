@@ -2,13 +2,17 @@ package com.ecosnap.Views
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.ecosnap.Controller.GetNearbyRecycleCenters
 import com.ecosnap.R
 import com.google.android.gms.common.api.ResolvableApiException
@@ -21,15 +25,18 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
-        private const val REQUEST_CHECK_SETTINGS = 2
-        private const val PROXIMITY_RADIUS = 10000
-        private const val API_KEY = "AIzaSyBLgt9kCOa6jnHzUVhZuVU6x4J3COAt80Q"
-        private const val NEARBY_PLACE = "recycling+center"
-    }
+private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+private const val REQUEST_CHECK_SETTINGS = 2
+private const val PROXIMITY_RADIUS = 10000
+private const val API_KEY = "AIzaSyBLgt9kCOa6jnHzUVhZuVU6x4J3COAt80Q"
+private const val NEARBY_PLACE = "recycling+center"
 
+
+class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+    private var listener: OnFragmentInteractionListener? = null
+    private var mapFragment: SupportMapFragment? = null
+    private lateinit var thisActivity: Activity
+    private lateinit var thisContext: Context
     private lateinit var map: GoogleMap
     private lateinit var fCL: FusedLocationProviderClient
     private lateinit var lastLocation: Location
@@ -38,28 +45,39 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private var locationUpdateState = false
     private lateinit var currLocation: LatLng
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps)
-        val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-        fCL = LocationServices.getFusedLocationProviderClient(this)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        val view: View = inflater.inflate(R.layout.fragment_map, container, false)
+        mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        if (mapFragment == null) {
+            var fm = fragmentManager
+            var ft = fm?.beginTransaction()
+            mapFragment = SupportMapFragment.newInstance()
+            ft?.replace(R.id.map, mapFragment)?.commit()
+        }
+        mapFragment?.getMapAsync(this)
+        fCL = LocationServices.getFusedLocationProviderClient(thisActivity)
         locationCallBack = object : LocationCallback() {}
         createLocationRequest()
+        return view
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+            thisContext = context
+            thisActivity = context as MainActivity
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        }
+    }
 
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
@@ -68,6 +86,32 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         map.setOnMarkerClickListener(this)
 
         setUpMap()
+    }
+
+    private fun setUpMap() {
+        if (ActivityCompat.checkSelfPermission(thisContext,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(thisActivity,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            return
+        }
+        map.isMyLocationEnabled = true
+
+        fCL.lastLocation.addOnSuccessListener(thisActivity) {location ->
+            if (location != null) {
+                lastLocation = location
+                var currentLatLng = LatLng(location.latitude, location.longitude)
+                currLocation = currentLatLng
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                getNearByRecyclingCenters(currLocation)
+            }
+        }
+        map.setOnCameraIdleListener {
+            //Removed map.clear()
+            //Map clear here causes instant map refresh on every little movement
+            val screenCenter = map.cameraPosition.target
+            getNearByRecyclingCenters(screenCenter)
+        }
     }
 
     override fun onMarkerClick(p0: Marker?) = false
@@ -94,32 +138,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
     }
 
-    private fun setUpMap() {
-        if (ActivityCompat.checkSelfPermission(this,
-                        android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
-            return
-        }
-        map.isMyLocationEnabled = true
-
-        fCL.lastLocation.addOnSuccessListener(this) {location ->
-            if (location != null) {
-                lastLocation = location
-                var currentLatLng = LatLng(location.latitude, location.longitude)
-                currLocation = currentLatLng
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
-                getNearByRecyclingCenters(currLocation)
-            }
-        }
-        map.setOnCameraIdleListener {
-            //Removed map.clear()
-            //Map clear here causes instant map refresh on every little movement
-            val screenCenter = map.cameraPosition.target
-            getNearByRecyclingCenters(screenCenter)
-        }
-    }
-
     private fun getNearByRecyclingCenters(location: LatLng) {
         var url = getUrl(location.latitude, location.longitude, NEARBY_PLACE)
         var dataTransfer = HashMap<Int, Any>()
@@ -130,9 +148,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
     private fun startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this,
+        if (ActivityCompat.checkSelfPermission(thisContext,
                         android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+            ActivityCompat.requestPermissions(thisActivity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
                     LOCATION_PERMISSION_REQUEST_CODE)
             return
         }
@@ -146,7 +164,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
         val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
-        val client = LocationServices.getSettingsClient(this)
+        val client = LocationServices.getSettingsClient(thisActivity)
         val task = client.checkLocationSettings(builder.build())
 
         task.addOnSuccessListener {
@@ -156,7 +174,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         task.addOnFailureListener {e ->
             if (e is ResolvableApiException) {
                 try {
-                    e.startResolutionForResult(this@MapsActivity, REQUEST_CHECK_SETTINGS)
+                    e.startResolutionForResult(MainActivity(), REQUEST_CHECK_SETTINGS)
                 } catch (sendEx: IntentSender.SendIntentException) {
                     //Ignore the error
                 }
@@ -173,4 +191,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         googlePlacesUrl.append("&key=" + API_KEY)
         return (googlePlacesUrl.toString())
     }
+
+    interface OnFragmentInteractionListener {}
 }

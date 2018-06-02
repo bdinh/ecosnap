@@ -38,7 +38,7 @@ class SignupActivity : AppCompatActivity() {
         val password = password_SU.text.toString()
         val passwordConf = passwordConf_SU.text.toString()
 
-        if (password == passwordConf) {
+        if (checkSignupFields(email, password, passwordConf)) {
             fbAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, {task ->
                     if (task.isSuccessful) {
@@ -50,5 +50,12 @@ class SignupActivity : AppCompatActivity() {
                     }
                 })
         }
+    }
+
+    fun checkSignupFields(email: String, password: String, passwordConf: String): Boolean {
+        if (email == "" || password == "" || passwordConf == "" || password != passwordConf) {
+            return false
+        }
+        return true
     }
 }

@@ -9,7 +9,6 @@ import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
 import com.ecosnap.Controller.GetNearbyRecycleCenters
 import com.ecosnap.R
 import com.google.android.gms.common.api.ResolvableApiException

@@ -2,7 +2,7 @@ package com.ecosnap.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.app.Fragment
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -32,7 +32,7 @@ class HistoryFragment : Fragment() {
         }
         val view = inflater.inflate(R.layout.history_view_list, container, false) as RecyclerView
         view.layoutManager = LinearLayoutManager(context)
-        view.adapter = SectionHistoryRecyclerViewAdapter(context, this.history as History)
+        view.adapter = SectionHistoryRecyclerViewAdapter(context!!, this.history as History)
 //        view.layoutManager = GridLayoutManager(context, 2)
 //        view.adapter = HistoryRecyclerViewAdapter(this.history as History)
         return view

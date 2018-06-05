@@ -8,26 +8,38 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
+import android.support.v4.app.ActivityCompat
 import com.ecosnap.Model.Profile
 import com.ecosnap.*
 import com.ecosnap.Model.DateHistory
 import com.ecosnap.Model.History
 import com.ecosnap.Model.HistoryItem
+import com.ecosnap.fragments.CameraFragment
 import com.ecosnap.fragments.HistoryFragment
+import com.ecosnap.fragments.ProfileFragment
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, HistoryFragment.OnHistoryFragmentInteractionListener {
-//      private lateinit var fbAuth: FirebaseAuth
+class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener,
+        HistoryFragment.OnHistoryFragmentInteractionListener, CameraFragment.OnCameraFragmentInteractionListener {
+    private lateinit var fbAuth: FirebaseAuth
 
-      override fun onHistoryDetailedView() {
+    override fun onHistoryDetailedView() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-  
+
+    override fun onCaptureButton() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createBottomNav()
-//        initializeMainActivity()
+        initializeMainActivity()
+        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 100)
+        btnLogout_M.visibility = View.INVISIBLE
     }
 
     fun createBottomNav() {
@@ -62,22 +74,25 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initProfileFragment() {
-        val profileExample = Profile("Aaron Nguyen", "Recycling newbie here! It’s about time that I started giving a shit.", 0)
+        val profileExample = Profile("Aaron Nguyen", "Recycling newbie here! It’s about time that I started to care.", 0)
         val args = Bundle()
-//        args.putString("name", "Aaron Nguyen")
-//        args.putString("descr", "Recycling newbie here! It’s about time that I started giving a shit.")
         args.putSerializable("user", profileExample)
         val profileFragment = ProfileFragment()
         profileFragment.arguments = args
-        val transaction = supportFragmentManager.beginTransaction()
+        val fm = supportFragmentManager
+        val transaction = fm.beginTransaction()
         transaction.replace(R.id.frame, profileFragment)
         transaction.commit()
     }
 
     fun initCameraFragment() {
-
+        val cameraFragment = CameraFragment()
+        val fm = supportFragmentManager
+        val transaction = fm.beginTransaction()
+        transaction.replace(R.id.frame, cameraFragment)
+        transaction.commit()
     }
-  
+
     fun initHistoryFragment() {
         val historyItem_1 = HistoryItem("Soda Can", R.drawable.sodacan, "74%", R.drawable.ic_pass)
         val historyItem_2 = HistoryItem("Glass Bottle", R.drawable.glassbottle, "87%", R.drawable.ic_pass)
@@ -89,7 +104,8 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         args.putSerializable("history", history)
         val historyFragment = HistoryFragment()
         historyFragment.arguments = args
-        val transaction = fragmentManager.beginTransaction()
+        val fm = supportFragmentManager
+        val transaction = fm.beginTransaction()
         transaction.replace(R.id.frame, historyFragment)
         transaction.commit()
     }
@@ -103,15 +119,15 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initializeMainActivity() {
-//        fbAuth = FirebaseAuth.getInstance()
-//        btnLogout_M.setOnClickListener {
-//            handleSignOut()
-//        }
+        fbAuth = FirebaseAuth.getInstance()
+        btnLogout_M.setOnClickListener {
+            handleSignOut()
+        }
     }
 
-//    fun handleSignOut() {
-//        fbAuth.signOut()
-//        val intent = Intent(this, LoginActivity::class.java)
-//        startActivity(intent)
-//    }
+    fun handleSignOut() {
+        fbAuth.signOut()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+    }
 }

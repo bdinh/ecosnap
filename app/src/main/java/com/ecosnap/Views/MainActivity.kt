@@ -1,7 +1,5 @@
 package com.ecosnap.Views
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -11,13 +9,11 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
 import android.support.v4.app.ActivityCompat
-import android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import com.ecosnap.Model.Profile
 import com.ecosnap.*
 import com.ecosnap.Model.DateHistory
 import com.ecosnap.Model.History
 import com.ecosnap.Model.HistoryItem
-import com.ecosnap.classifier.*
 import com.ecosnap.fragments.CameraFragment
 import com.ecosnap.fragments.HistoryFragment
 import com.ecosnap.fragments.ProfileFragment
@@ -27,10 +23,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, MapFragment.OnFragmentInteractionListener,
         HistoryFragment.OnHistoryFragmentInteractionListener, CameraFragment.OnCameraFragmentInteractionListener {
     private lateinit var fbAuth: FirebaseAuth
-
-    override fun onHistoryDetailedView() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     override fun onCaptureButton() {
     }
@@ -95,18 +87,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initCameraFragment() {
-        val args = Bundle()
-        val classifier = ImageClassifierFactory.create(
-                assets,
-                GRAPH_FILE_PATH,
-                LABELS_FILE_PATH,
-                IMAGE_SIZE,
-                GRAPH_INPUT_NAME,
-                GRAPH_OUTPUT_NAME
-        )
-        args.putSerializable("classifier", classifier)
         val cameraFragment = CameraFragment()
-        cameraFragment.arguments = args
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
         transaction.replace(R.id.frame, cameraFragment)

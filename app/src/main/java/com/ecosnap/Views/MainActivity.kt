@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         createBottomNav()
         initializeMainActivity()
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 100)
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
         btnLogout_M.visibility = View.INVISIBLE
     }
 

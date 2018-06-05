@@ -13,6 +13,7 @@
         tools:layout_editor_absoluteY="4dp" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:layout_marginBottom="64dp"
@@ -34,6 +35,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/camera_label_report"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_report_preview"
+            app:layout_constraintBottom_toBottomOf="@+id/capture_image_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/capture_image_button" />
 
     </android.support.constraint.ConstraintLayout>
 

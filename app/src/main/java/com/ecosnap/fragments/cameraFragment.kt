@@ -1,7 +1,6 @@
 package com.ecosnap.fragments
 
 import android.content.Context
-import android.content.res.AssetManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -28,8 +27,6 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.round
-
 
 class CameraFragment : Fragment() {
     private lateinit var classifier: Classifier
@@ -63,7 +60,6 @@ class CameraFragment : Fragment() {
     private val cameraManager by lazy {
         activity?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
     }
-
     private fun startBackgroundThread() {
         backgroundThread = HandlerThread("Camera Capture").also { it.start() }
         backgroundHandler = Handler(backgroundThread.looper)
@@ -152,7 +148,6 @@ class CameraFragment : Fragment() {
         override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) = Unit
         override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?) = true
         override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
-            println("hello")
             openCamera()
         }
     }
@@ -187,9 +182,11 @@ class CameraFragment : Fragment() {
         stopBackgroundThread()
         super.onPause()
     }
+
     private fun openCamera() {
         this.checkCameraPermission()
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -199,7 +196,6 @@ class CameraFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_camera, container, false)
     }
 
@@ -274,10 +270,6 @@ class CameraFragment : Fragment() {
         }
     }
 
-    fun onCaptureButton() {
-
-    }
-
     private fun lock() {
         try {
             captureSession.capture(captureRequestBuilder.build(), null, backgroundHandler)
@@ -293,7 +285,6 @@ class CameraFragment : Fragment() {
             Log.e(TAG, e.toString())
         }
     }
-
 
     private fun createImageGallery() {
         val storageDirectory: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)

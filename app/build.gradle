@@ -37,6 +37,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation 'pub.devrel:easypermissions:1.2.0'
+    implementation "org.tensorflow:tensorflow-android:+"
 }
 
 

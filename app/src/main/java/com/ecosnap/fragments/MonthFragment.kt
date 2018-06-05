@@ -66,4 +66,3 @@ class MonthFragment : Fragment() {
         return view
     }
 }
-

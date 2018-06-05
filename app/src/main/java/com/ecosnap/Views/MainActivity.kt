@@ -10,35 +10,43 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import com.ecosnap.Model.Profile
 import com.ecosnap.*
 import com.ecosnap.Model.DateHistory
 import com.ecosnap.Model.History
 import com.ecosnap.Model.HistoryItem
+import com.ecosnap.classifier.*
+import com.ecosnap.fragments.CameraFragment
 import com.ecosnap.fragments.HistoryFragment
 import com.ecosnap.fragments.ProfileFragment
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, HistoryFragment.OnHistoryFragmentInteractionListener, MapFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, MapFragment.OnFragmentInteractionListener,
+        HistoryFragment.OnHistoryFragmentInteractionListener, CameraFragment.OnCameraFragmentInteractionListener {
     private lateinit var fbAuth: FirebaseAuth
 
     override fun onHistoryDetailedView() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-  
+
+    override fun onCaptureButton() {
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createBottomNav()
         initializeMainActivity()
+        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 100)
+        btnLogout_M.visibility = View.INVISIBLE
     }
 
     fun createBottomNav() {
         val bottomNavigation = findViewById<View>(R.id.bottom_navigation) as AHBottomNavigation
-
         val item1 = AHBottomNavigationItem(R.string.bottomnav_title_0, R.drawable.ic_locate, R.color.navSelect)
         val item2 = AHBottomNavigationItem(R.string.bottomnav_title_1, R.drawable.ic_history, R.color.navSelect)
         val item3 = AHBottomNavigationItem(R.string.bottomnav_title_2, R.drawable.ic_camera, R.color.navSelect)
@@ -87,7 +95,22 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initCameraFragment() {
-
+        val args = Bundle()
+        val classifier = ImageClassifierFactory.create(
+                assets,
+                GRAPH_FILE_PATH,
+                LABELS_FILE_PATH,
+                IMAGE_SIZE,
+                GRAPH_INPUT_NAME,
+                GRAPH_OUTPUT_NAME
+        )
+        args.putSerializable("classifier", classifier)
+        val cameraFragment = CameraFragment()
+        cameraFragment.arguments = args
+        val fm = supportFragmentManager
+        val transaction = fm.beginTransaction()
+        transaction.replace(R.id.frame, cameraFragment)
+        transaction.commit()
     }
 
     fun initHistoryFragment() {
@@ -124,3 +147,4 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         startActivity(intent)
     }
 }
+

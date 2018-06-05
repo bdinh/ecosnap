@@ -1,5 +1,7 @@
 package com.ecosnap.Views
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -19,7 +21,7 @@ import com.ecosnap.fragments.ProfileFragment
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, HistoryFragment.OnHistoryFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, HistoryFragment.OnHistoryFragmentInteractionListener, MapFragment.OnFragmentInteractionListener {
     private lateinit var fbAuth: FirebaseAuth
 
     override fun onHistoryDetailedView() {
@@ -65,6 +67,13 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         }
     }
 
+    fun initLocateFragment() {
+        val fm = supportFragmentManager
+        val transaction = fm.beginTransaction()
+        transaction.replace(R.id.frame, MapFragment())
+        transaction.commit()
+    }
+
     fun initProfileFragment() {
         val profileExample = Profile("Aaron Nguyen", "Recycling newbie here! It’s about time that I started to care.", 0)
         val args = Bundle()
@@ -96,10 +105,6 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         val transaction = fm.beginTransaction()
         transaction.replace(R.id.frame, historyFragment)
         transaction.commit()
-    }
-
-    fun initLocateFragment() {
-
     }
 
     fun fetchColor(@ColorRes color: Int): Int {

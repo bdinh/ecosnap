@@ -37,13 +37,36 @@
 
     </android.support.constraint.ConstraintLayout>
 
+    <ImageView
+        android:id="@+id/close_image_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_close_preview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/image_camera_label_confidence"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#40000000"
+        android:padding="4dp"
+        android:text="Confidence: 75%"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_camera_label" />
+
     <TextView
         android:id="@+id/image_camera_label"
         android:layout_width="595dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:background="#20000000"
-        android:padding="16dp"
+        android:background="#40000000"
+        android:paddingTop="8dp"
         android:text="Recyclable"
         android:textAlignment="center"
         android:textColor="#008000"
@@ -54,13 +77,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/close_image_button"
-        android:layout_width="47dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="16dp"
+        android:id="@+id/camera_label_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/ic_close_preview"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

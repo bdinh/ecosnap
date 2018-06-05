@@ -1,7 +1,10 @@
 package com.ecosnap.fragments
 
 import android.content.Context
+import android.content.res.AssetManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
 import android.hardware.camera2.params.StreamConfigurationMap
@@ -13,22 +16,29 @@ import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.*
 import com.ecosnap.R
+import com.ecosnap.classifier.*
+import com.ecosnap.utils.getCroppedBitmap
 import kotlinx.android.synthetic.main.fragment_camera.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.round
+
 
 class CameraFragment : Fragment() {
-
+    private lateinit var classifier: Classifier
     private val MAX_PREVIEW_WIDTH = 1280
     private val MAX_PREVIEW_HEIGHT = 720
     private lateinit var captureSession: CameraCaptureSession
     private lateinit var captureRequestBuilder: CaptureRequest.Builder
     private lateinit var cameraDevice: CameraDevice
+    private val handler: Handler = Handler()
     private val deviceStateCallback = object: CameraDevice.StateCallback() {
         override fun onOpened(camera: CameraDevice?) {
             Log.d(TAG, "camera device opened")
@@ -183,6 +193,7 @@ class CameraFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            classifier = it.getSerializable("classifier") as Classifier
         }
     }
 
@@ -202,13 +213,12 @@ class CameraFragment : Fragment() {
         close_image_button.setOnClickListener{
             this.retakePicture()
         }
-        image_camera_label.visibility = View.INVISIBLE
-        close_image_button.visibility = View.INVISIBLE
-
+        hideLabels()
     }
 
     private fun retakePicture() {
-        println("Retaking Picture")
+        hideLabels()
+        unlock()
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -220,16 +230,31 @@ class CameraFragment : Fragment() {
     }
     override fun onDetach() {
         stopBackgroundThread()
+        closeCamera()
         super.onDetach()
         listener = null
+    }
+
+    override fun onStop() {
+        stopBackgroundThread()
+        closeCamera()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        stopBackgroundThread()
+        closeCamera()
+        super.onDestroy()
     }
 
     private fun takePicture() {
         createImageGallery()
         lock()
         var outputPhoto: FileOutputStream? = null
+        var outputFile: File? = null
         try {
-            outputPhoto = FileOutputStream(createImageFile(galleryFolder))
+            outputFile = createImageFile(galleryFolder)
+            outputPhoto = FileOutputStream(outputFile)
             camera_texture_view.getBitmap()
                     .compress(Bitmap.CompressFormat.PNG, 100, outputPhoto)
         } catch (e: Exception) {
@@ -238,8 +263,7 @@ class CameraFragment : Fragment() {
 //            unlock()
             // Show new fragment with overlay
             captureSession.stopRepeating()
-            image_camera_label.visibility = View.VISIBLE
-            close_image_button.visibility = View.VISIBLE
+            classifyImage(outputFile as File)
             try {
                 if (outputPhoto != null) {
                     outputPhoto.close()
@@ -291,6 +315,53 @@ class CameraFragment : Fragment() {
     }
     interface OnCameraFragmentInteractionListener {
         fun onCaptureButton()
+    }
+
+    private fun classifyImage(file: File) {
+        val photoBitmap = BitmapFactory.decodeFile(file.absolutePath)
+        val croppedBitmap = getCroppedBitmap(photoBitmap)
+        classifyAndShowResult(croppedBitmap)
+    }
+
+    private fun classifyAndShowResult(croppedBitmap: Bitmap) {
+        runInBackground(
+                Runnable {
+                    // Handle Firebase Storage Here
+                    val result = classifier.labelImage(croppedBitmap)
+                    val confidenceRounded = "%.4f".format(result.confidence).toFloat() * 100
+                    if (result.result == "recyclable") {
+                        camera_label_icon.setImageResource(R.drawable.ic_pass)
+                        image_camera_label.setTextColor(Color.GREEN)
+                        image_camera_label.text = resources.getString(R.string.recyclable)
+
+                    } else {
+                        camera_label_icon.setImageResource(R.drawable.ic_reject)
+                        image_camera_label.setTextColor(Color.RED)
+                        image_camera_label.text = resources.getString(R.string.nonrecyclable)
+                    }
+                    image_camera_label_confidence.text = "Confidence: " + confidenceRounded + "%"
+                    showLabels()
+                    println(result)
+                })
+    }
+
+    private fun hideLabels() {
+        image_camera_label.visibility = View.INVISIBLE
+        close_image_button.visibility = View.INVISIBLE
+        image_camera_label_confidence.visibility = View.INVISIBLE
+        camera_label_icon.visibility = View.INVISIBLE
+    }
+
+    private fun showLabels() {
+        image_camera_label.visibility = View.VISIBLE
+        close_image_button.visibility = View.VISIBLE
+        image_camera_label_confidence.visibility = View.VISIBLE
+        camera_label_icon.visibility = View.VISIBLE
+    }
+
+    @Synchronized
+    private fun runInBackground(runnable: Runnable) {
+        handler.post(runnable)
     }
 
 }

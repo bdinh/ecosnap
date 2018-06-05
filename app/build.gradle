@@ -35,6 +35,7 @@ dependencies {
     implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation 'pub.devrel:easypermissions:1.2.0'
+    implementation "org.tensorflow:tensorflow-android:+"
 }
 
 apply plugin: 'com.google.gms.google-services'

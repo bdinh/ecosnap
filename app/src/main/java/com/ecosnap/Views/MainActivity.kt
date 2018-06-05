@@ -14,11 +14,14 @@ import com.ecosnap.*
 import com.ecosnap.Model.DateHistory
 import com.ecosnap.Model.History
 import com.ecosnap.Model.HistoryItem
+import com.ecosnap.classifier.*
 import com.ecosnap.fragments.CameraFragment
 import com.ecosnap.fragments.HistoryFragment
 import com.ecosnap.fragments.ProfileFragment
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
+
+
 
 class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener,
         HistoryFragment.OnHistoryFragmentInteractionListener, CameraFragment.OnCameraFragmentInteractionListener {
@@ -44,7 +47,6 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
 
     fun createBottomNav() {
         val bottomNavigation = findViewById<View>(R.id.bottom_navigation) as AHBottomNavigation
-
         val item1 = AHBottomNavigationItem(R.string.bottomnav_title_0, R.drawable.ic_locate, R.color.navSelect)
         val item2 = AHBottomNavigationItem(R.string.bottomnav_title_1, R.drawable.ic_history, R.color.navSelect)
         val item3 = AHBottomNavigationItem(R.string.bottomnav_title_2, R.drawable.ic_camera, R.color.navSelect)
@@ -86,7 +88,18 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initCameraFragment() {
+        val args = Bundle()
+        val classifier = ImageClassifierFactory.create(
+                assets,
+                GRAPH_FILE_PATH,
+                LABELS_FILE_PATH,
+                IMAGE_SIZE,
+                GRAPH_INPUT_NAME,
+                GRAPH_OUTPUT_NAME
+        )
+        args.putSerializable("classifier", classifier)
         val cameraFragment = CameraFragment()
+        cameraFragment.arguments = args
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
         transaction.replace(R.id.frame, cameraFragment)

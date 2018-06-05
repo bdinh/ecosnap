@@ -93,24 +93,27 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
                         android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(thisActivity,
                     arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
-            return
-        }
-        map.isMyLocationEnabled = true
+            setUpMap()
+        } else {
+            map.isMyLocationEnabled = true
+            // Removes +, - (zoom controls) since they don't fit properly inside fragment
+            map.uiSettings.isZoomControlsEnabled = false
 
-        fCL.lastLocation.addOnSuccessListener(thisActivity) {location ->
-            if (location != null) {
-                lastLocation = location
-                var currentLatLng = LatLng(location.latitude, location.longitude)
-                currLocation = currentLatLng
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
-                getNearByRecyclingCenters(currLocation)
+            fCL.lastLocation.addOnSuccessListener(thisActivity) {location ->
+                if (location != null) {
+                    lastLocation = location
+                    var currentLatLng = LatLng(location.latitude, location.longitude)
+                    currLocation = currentLatLng
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                    getNearByRecyclingCenters(currLocation)
+                }
             }
-        }
-        map.setOnCameraIdleListener {
-            //Removed map.clear()
-            //Map clear here causes instant map refresh on every little movement
-            val screenCenter = map.cameraPosition.target
-            getNearByRecyclingCenters(screenCenter)
+            map.setOnCameraIdleListener {
+                //Removed map.clear()
+                //Map clear here causes instant map refresh on every little movement
+                val screenCenter = map.cameraPosition.target
+                getNearByRecyclingCenters(screenCenter)
+            }
         }
     }
 

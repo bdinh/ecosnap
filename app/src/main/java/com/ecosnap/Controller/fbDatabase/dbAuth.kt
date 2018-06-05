@@ -7,5 +7,5 @@ fun insertNewUserIntoDatabase(db: FirebaseDatabase, firstName: String, lastName:
     val user = NewUserProfile(firstName, lastName, email)
 
     val ref = db.getReference("users")
-    ref.child(userID).setValue(user)
+    ref.child(userID).child("profile").setValue(user)
 }

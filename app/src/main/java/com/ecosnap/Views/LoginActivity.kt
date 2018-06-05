@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this, {task ->
                 if (task.isSuccessful) {
                     val intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra("id", fbAuth.currentUser?.email)
+                    intent.putExtra("id", fbAuth.currentUser?.uid)
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "error: " + task.exception?.message, Toast.LENGTH_LONG).show()

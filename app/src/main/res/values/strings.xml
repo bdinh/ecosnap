@@ -1,15 +1,14 @@
 <resources>
     <string name="app_name">EcoSnap</string>
-
     <string name="bottomnav_title_0">Locate</string>
     <string name="bottomnav_title_1">History</string>
     <string name="bottomnav_title_2">Camera</string>
     <string name="bottomnav_title_3">Profile</string>
     <string name="recyclable">Recyclable</string>
     <string name="nonrecyclable">Non-Recyclable</string>
-
+    <string name="title_activity_maps">Map</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
+    <string name="toSignupText">Don\'t have an account? <u>Sign Up</u></string>
+    <string name="toLoginText">Already have an account? <u>Login</u></string>
 </resources>

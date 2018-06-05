@@ -15,11 +15,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "1010428999391-3lm9in343v9vaugjbvhl8su5qf6l4gha.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecosnap",
+            "certificate_hash": "9423673a294a076cb421e70c9e9a09cb91420bb9"
+          }
+        },
+        {
           "client_id": "1010428999391-hj5kq50bj661n745smi4ki3e9pkts18i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ecosnap",
-            "certificate_hash": "268393f4e5aabaaeb004f41f06c970a4722d70be"
+            "certificate_hash": "346d05e7e87018db16424ae3058556c1ab56cd89"
           }
         },
         {

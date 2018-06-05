@@ -28,7 +28,11 @@ class LoginActivity : AppCompatActivity() {
     fun initializeLoginActivity() {
         fbAuth = FirebaseAuth.getInstance()
         btnLogin_LI.setOnClickListener {
-            handleLogin(email_LI.text.toString(), password_LI.text.toString())
+            val email = email_LI.text.toString()
+            val password = password_LI.text.toString()
+            if (email != "" && password != "") {
+                handleLogin(email_LI.text.toString(), password_LI.text.toString())
+            }
         }
         toSignup_LI.setOnClickListener {
             val intent = Intent(this, SignupActivity::class.java)

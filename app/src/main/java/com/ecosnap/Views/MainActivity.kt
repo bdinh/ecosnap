@@ -1,5 +1,7 @@
 package com.ecosnap.Views
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +11,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import com.ecosnap.Model.Profile
 import com.ecosnap.*
 import com.ecosnap.Model.DateHistory
@@ -21,9 +24,7 @@ import com.ecosnap.fragments.ProfileFragment
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
-
-
-class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener,
+class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, MapFragment.OnFragmentInteractionListener,
         HistoryFragment.OnHistoryFragmentInteractionListener, CameraFragment.OnCameraFragmentInteractionListener {
     private lateinit var fbAuth: FirebaseAuth
 
@@ -32,7 +33,6 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     override fun onCaptureButton() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +73,13 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
             // Do something cool here...
             true
         }
+    }
+
+    fun initLocateFragment() {
+        val fm = supportFragmentManager
+        val transaction = fm.beginTransaction()
+        transaction.replace(R.id.frame, MapFragment())
+        transaction.commit()
     }
 
     fun initProfileFragment() {
@@ -123,10 +130,6 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         transaction.commit()
     }
 
-    fun initLocateFragment() {
-
-    }
-
     fun fetchColor(@ColorRes color: Int): Int {
         return ContextCompat.getColor(this, color)
     }
@@ -144,3 +147,4 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         startActivity(intent)
     }
 }
+

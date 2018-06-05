@@ -4,10 +4,10 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.ecosnap.Controller.fbDatabase.insertNewUserIntoDatabase
 import com.ecosnap.R
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_signup.*
 
 class SignupActivity : AppCompatActivity() {
@@ -19,7 +19,6 @@ class SignupActivity : AppCompatActivity() {
 
         initializeSignUpActivity()
     }
-
 
 
     fun initializeSignUpActivity() {
@@ -34,16 +33,21 @@ class SignupActivity : AppCompatActivity() {
     }
 
     fun handleSignUp() {
-        var email = email_SU.text.toString()
+        val firstName = fName_SU.text.toString()
+        val lastName = lName_SU.text.toString()
+        val email = email_SU.text.toString()
         val password = password_SU.text.toString()
         val passwordConf = passwordConf_SU.text.toString()
 
-        if (checkSignupFields(email, password, passwordConf)) {
+        if (checkSignupFields(firstName, lastName, email, password, passwordConf)) {
             fbAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, {task ->
                     if (task.isSuccessful) {
+                        val db = FirebaseDatabase.getInstance()
+                        val userID = fbAuth.currentUser?.uid as String
+                        insertNewUserIntoDatabase(db, firstName, lastName, email, userID)
                         val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra("id", fbAuth.currentUser?.email)
+                        intent.putExtra("id", userID)
                         startActivity(intent)
                     } else {
                         Toast.makeText(this, "error: " + task.exception?.message, Toast.LENGTH_LONG).show()
@@ -52,10 +56,12 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-    fun checkSignupFields(email: String, password: String, passwordConf: String): Boolean {
-        if (email == "" || password == "" || passwordConf == "" || password != passwordConf) {
+    fun checkSignupFields(firstName: String, lastName: String, email: String, password: String, passwordConf: String): Boolean {
+        if (firstName == "" || lastName == "" || email == "" || password == "" || passwordConf == "" || password != passwordConf) {
             return false
         }
         return true
     }
+
+
 }

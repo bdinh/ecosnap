@@ -8,11 +8,48 @@
 
     tools:context=".Views.SignupActivity" >
 
+    <EditText
+        android:id="@+id/fName_SU"
+        android:layout_width="102dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="#48FFFFFF"
+        android:ems="10"
+        android:hint="First Name"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="10dp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/offWhite"
+        android:textColorHint="@color/offWhite"
+        app:layout_constraintBottom_toTopOf="@+id/email_SU"
+        app:layout_constraintEnd_toStartOf="@+id/lName_SU"
+        app:layout_constraintHorizontal_bias="0.974"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/lName_SU"
+        android:layout_width="103dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="84dp"
+        android:background="#48FFFFFF"
+        android:ems="10"
+        android:hint="Last Name"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="10dp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/offWhite"
+        android:textColorHint="@color/offWhite"
+        app:layout_constraintBottom_toTopOf="@+id/email_SU"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:id="@+id/toLogin_SU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/toLoginText"
@@ -95,11 +132,9 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="120dp"
-        app:layout_constraintBottom_toTopOf="@+id/email_SU"
+        android:layout_marginTop="45dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -26,15 +26,13 @@ class HistoryFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         arguments?.let {
             history = it.getSerializable("history") as History
         }
+
         val view = inflater.inflate(R.layout.history_view_list, container, false) as RecyclerView
         view.layoutManager = LinearLayoutManager(context)
         view.adapter = SectionHistoryRecyclerViewAdapter(context!!, this.history as History)
-//        view.layoutManager = GridLayoutManager(context, 2)
-//        view.adapter = HistoryRecyclerViewAdapter(this.history as History)
         return view
     }
 
@@ -57,6 +55,5 @@ class HistoryFragment : Fragment() {
     }
 
     interface OnHistoryFragmentInteractionListener {
-        fun onHistoryDetailedView()
     }
 }

@@ -1,6 +1,7 @@
 package com.ecosnap.fragments
 
 import android.content.Context
+import android.content.res.AssetManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -12,6 +13,7 @@ import android.os.Environment
 import android.os.Handler
 import android.os.HandlerThread
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.*
 import com.ecosnap.R
@@ -190,8 +192,16 @@ class CameraFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            classifier = it.getSerializable("classifier") as Classifier
         }
+        classifier = ImageClassifierFactory.create(
+                context?.assets as AssetManager,
+                GRAPH_FILE_PATH,
+                LABELS_FILE_PATH,
+                IMAGE_SIZE,
+                GRAPH_INPUT_NAME,
+                GRAPH_OUTPUT_NAME
+        )
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

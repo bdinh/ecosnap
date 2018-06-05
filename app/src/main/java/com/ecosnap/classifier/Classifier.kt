@@ -14,10 +14,9 @@ interface Classifier: Serializable {
     fun labelImage(bitmap: Bitmap) : InferenceResult
 }
 
-data class InferenceResult(val result: String, val confidence: kotlin.Float)
+data class InferenceResult(val result: String, val confidence: kotlin.Float) :Serializable
 
 object ImageClassifierFactory {
-
     fun create(
             assetManager: AssetManager,
             graphFilePath: String,
@@ -53,7 +52,7 @@ class ImageClassifier (
         private val imageNormalizedPixels: FloatArray,
         private val results: FloatArray,
         private val tensorFlowInference: TensorFlowInferenceInterface
-) : Classifier {
+) : Classifier, Serializable {
 
     override fun labelImage(bitmap: Bitmap): InferenceResult {
         preprocessImageToNormalizedFloats(bitmap)

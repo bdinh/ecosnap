@@ -16,6 +16,8 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.*
+import com.afollestad.materialdialogs.DialogAction
+import com.afollestad.materialdialogs.MaterialDialog
 import com.ecosnap.R
 import com.ecosnap.classifier.*
 import com.ecosnap.utils.getCroppedBitmap
@@ -97,6 +99,7 @@ class CameraFragment : Fragment() {
 
                 }, null)
     }
+
     private fun closeCamera() {
         if (this::captureSession.isInitialized) {
             captureSession.close()
@@ -105,6 +108,7 @@ class CameraFragment : Fragment() {
             cameraDevice.close()
         }
     }
+
     private fun <T> cameraCharacteristics(cameraID: String, key: CameraCharacteristics.Key<T>) :T {
         val characteristics = cameraManager.getCameraCharacteristics(cameraID)
         return when (key) {
@@ -113,6 +117,7 @@ class CameraFragment : Fragment() {
             else -> throw IllegalArgumentException("Ket not recognized")
         }
     }
+
     private fun cameraID(lens: Int) :String {
         var deviceID = listOf<String>()
         try {
@@ -123,6 +128,7 @@ class CameraFragment : Fragment() {
         }
         return deviceID[0]
     }
+
     private fun connectCamera() {
         val deviceID = cameraID(CameraCharacteristics.LENS_FACING_BACK)
         val streamConfigurationMap: StreamConfigurationMap = cameraManager.getCameraCharacteristics(deviceID).get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -219,7 +225,44 @@ class CameraFragment : Fragment() {
         close_image_button.setOnClickListener{
             this.retakePicture()
         }
+
+        camera_label_report.setOnClickListener{
+            this.displayReportOption()
+        }
+
         hideLabels()
+    }
+
+    private fun displayReportOption() {
+        val dialog = MaterialDialog.Builder(context as Context)
+                .title("Reporting Misclassification")
+                .content("Our model is not perfect, therefore we would love feedback from you. Would you like to provide feedback?")
+                .positiveText("Yes")
+                .negativeText("No")
+                .positiveColor(resources.getColor(R.color.colorPrimaryDark))
+                .onPositive{ materialDialog: MaterialDialog, dialogAction: DialogAction ->
+                    this.displayLabelFeedback()
+                }
+
+        dialog.show()
+    }
+
+
+    private fun displayLabelFeedback() {
+        val dialog = MaterialDialog.Builder(context as Context)
+                .title("Was this item not classified correctly?")
+                .positiveText("Yes")
+                .negativeText("No")
+                .positiveColor(resources.getColor(R.color.colorPrimaryDark))
+                .onPositive{ materialDialog: MaterialDialog, dialogAction: DialogAction ->
+                    // Write to db and adjust model
+                }
+                .onNegative{
+                    materialDialog: MaterialDialog, dialogAction: DialogAction ->
+                    // Write to db and adjust model
+                }
+
+        dialog.show()
     }
 
     private fun retakePicture() {
@@ -351,6 +394,7 @@ class CameraFragment : Fragment() {
         close_image_button.visibility = View.INVISIBLE
         image_camera_label_confidence.visibility = View.INVISIBLE
         camera_label_icon.visibility = View.INVISIBLE
+        camera_label_report.visibility = View.INVISIBLE
     }
 
     private fun showLabels() {
@@ -358,6 +402,7 @@ class CameraFragment : Fragment() {
         close_image_button.visibility = View.VISIBLE
         image_camera_label_confidence.visibility = View.VISIBLE
         camera_label_icon.visibility = View.VISIBLE
+        camera_label_report.visibility = View.VISIBLE
     }
 
     @Synchronized

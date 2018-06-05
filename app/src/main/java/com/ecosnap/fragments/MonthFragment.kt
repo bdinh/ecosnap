@@ -39,7 +39,7 @@ class MonthFragment : Fragment() {
                 + "          ['June', 17, 11]"
                 + "        ]);"
                 + "        var options = {"
-                + "          chartArea: {left: 16, top: 32},"
+                + "          chartArea: {left: 72, top: 32},"
                 + "          forceIFrame: true,"
                 + "          colors: ['#00796B', '#a94850'],"
                 + "          legend: {position: 'bottom', alignment: 'center'}"

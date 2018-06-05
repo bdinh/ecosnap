@@ -42,7 +42,7 @@ class WeekFragment : Fragment() {
                 + "          ['Today', 2, 1]"
                 + "        ]);"
                 + "        var options = {"
-                + "          chartArea: {left: 16, top: 32},"
+                + "          chartArea: {left: 72, top: 32},"
                 + "          forceIFrame: true,"
                 + "          colors: ['#00796B', '#a94850'],"
                 + "          legend: {position: 'bottom', alignment: 'center'}"

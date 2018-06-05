@@ -3,32 +3,36 @@ package com.ecosnap.Views
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.ecosnap.R
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_main.*
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
+import android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+import com.ecosnap.Model.Profile
+import com.ecosnap.*
+import com.ecosnap.Model.DateHistory
+import com.ecosnap.Model.History
+import com.ecosnap.Model.HistoryItem
+import com.ecosnap.fragments.HistoryFragment
+import com.ecosnap.fragments.ProfileFragment
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_main.*
 
-
-
-
-
-
-
-class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, HistoryFragment.OnHistoryFragmentInteractionListener, MapFragment.OnFragmentInteractionListener {
     private lateinit var fbAuth: FirebaseAuth
+
+    override fun onHistoryDetailedView() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+  
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createBottomNav()
-
         initializeMainActivity()
     }
 
@@ -54,8 +58,10 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         bottomNavigation.setOnTabSelectedListener { position, wasSelected ->
             when(position) {
                 0 -> initLocateFragment()
+                1 -> initHistoryFragment()
+                2 -> initCameraFragment()
+                3 -> initProfileFragment()
             }
-
             // Do something cool here...
             true
         }
@@ -68,8 +74,40 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         transaction.commit()
     }
 
+    fun initProfileFragment() {
+        val profileExample = Profile("Aaron Nguyen", "Recycling newbie here! It’s about time that I started to care.", 0)
+        val args = Bundle()
+        args.putSerializable("user", profileExample)
+        val profileFragment = ProfileFragment()
+        profileFragment.arguments = args
+        val fm = supportFragmentManager
+        val transaction = fm.beginTransaction()
+        transaction.replace(R.id.frame, profileFragment)
+        transaction.commit()
+    }
 
-    private fun fetchColor(@ColorRes color: Int): Int {
+    fun initCameraFragment() {
+
+    }
+
+    fun initHistoryFragment() {
+        val historyItem_1 = HistoryItem("Soda Can", R.drawable.sodacan, "74%", R.drawable.ic_pass)
+        val historyItem_2 = HistoryItem("Glass Bottle", R.drawable.glassbottle, "87%", R.drawable.ic_pass)
+        val historyItem_3 = HistoryItem("Stuffed Animal", R.drawable.teddybear, "91%", R.drawable.ic_reject)
+        val dateHistory_1 = DateHistory("Today", arrayOf(historyItem_1, historyItem_2, historyItem_3))
+        val dateHistory_2 = DateHistory("Yesterday", arrayOf(historyItem_1, historyItem_2, historyItem_3))
+        val history = History(arrayOf(dateHistory_1, dateHistory_2))
+        val args = Bundle()
+        args.putSerializable("history", history)
+        val historyFragment = HistoryFragment()
+        historyFragment.arguments = args
+        val fm = supportFragmentManager
+        val transaction = fm.beginTransaction()
+        transaction.replace(R.id.frame, historyFragment)
+        transaction.commit()
+    }
+
+    fun fetchColor(@ColorRes color: Int): Int {
         return ContextCompat.getColor(this, color)
     }
 

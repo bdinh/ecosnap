@@ -9,32 +9,32 @@ import android.view.ViewGroup
 import com.ecosnap.Model.Profile
 import com.ecosnap.R
 import com.ecosnap.Adapters.ProfilePagerAdapter
+import com.ecosnap.Model.ProfileChartData
+import com.ecosnap.Model.UserProfile
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class ProfileFragment : Fragment() {
     private val ITEMS = 5
-    private lateinit var profile: Profile
+    private lateinit var profile: UserProfile
+    private lateinit var profileData: ProfileChartData
     private var listener: OnProfileFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            profile = it.getSerializable("user") as Profile
+            profile = it.getSerializable("user") as UserProfile
+            profileData = it.getSerializable("profileData") as ProfileChartData
         }
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        arguments?.let {
-            profile = it.getSerializable("user") as Profile
-        }
 
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
-        val mAdapter = ProfilePagerAdapter(fragmentManager)
+        val mAdapter = ProfilePagerAdapter(fragmentManager, profileData)
         view.vp_profile.adapter = mAdapter
         view.tabs_profile.setupWithViewPager(view.vp_profile)
-        view.txt_profile_title.text = profile.name
+        view.txt_profile_title.text = profile.firstName + " " + profile.lastName
         view.txt_profile_bio.text = profile.descr
         // view.img_profile_pict.setImageDrawable(profile.img)
         return view

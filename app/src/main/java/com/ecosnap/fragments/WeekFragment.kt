@@ -6,24 +6,25 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.ecosnap.Model.WeekChartData
 import com.ecosnap.R
 import kotlinx.android.synthetic.main.fragment_week.view.*
 
 class WeekFragment : Fragment() {
-    private var test = ""
+    private lateinit var dataString: String
     private var content = ""
 
-    fun newInstance(str: String): WeekFragment {
+    fun newInstance(dataString: String): WeekFragment {
         val weekFragment= WeekFragment()
         val args = Bundle()
-        args.putString("week", str)
+        args.putString("data", dataString)
         weekFragment.arguments = args
         return weekFragment
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        test = arguments?.getSerializable("week") as String
+        dataString = arguments?.getString("data") as String
         content = ("<html>"
                 + "  <head>"
                 + "    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>"
@@ -32,14 +33,8 @@ class WeekFragment : Fragment() {
                 + "      google.charts.setOnLoadCallback(drawChart);"
                 + "      function drawChart() {"
                 + "        var data = google.visualization.arrayToDataTable(["
-                + "          ['Dates', 'Recyclable', 'Not Recyclable'],"
-                + "          ['June 1', 4, 2],"
-                + "          ['June 2', 2, 3],"
-                + "          ['June 3', 0, 0],"
-                + "          ['June 4', 0, 2],"
-                + "          ['June 5', 3, 1],"
-                + "          ['Yesterday', 1, 1],"
-                + "          ['Today', 2, 1]"
+                + "          ['Dates', 'Recyclable', 'Not Recyclable'], "
+                +           dataString
                 + "        ]);"
                 + "        var options = {"
                 + "          chartArea: {left: 72, top: 32},"

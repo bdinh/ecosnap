@@ -1,5 +1,6 @@
 package com.ecosnap.Model
 
+import android.graphics.Bitmap
 import java.io.Serializable
 
 class dbHistoryItem (
@@ -9,3 +10,9 @@ class dbHistoryItem (
         val imgPath: String = ""
 ) : Serializable
 
+class  UIhistoryItem (
+        val type: String,
+        val confidence: String,
+        val date: String,
+        val image: Bitmap
+        ) :Serializable

@@ -10,8 +10,6 @@ import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
 import android.support.v4.app.ActivityCompat
 import android.util.Log
-import com.ecosnap.*
-import com.ecosnap.Controller.fbDatabase.insertHistoryItem
 import com.ecosnap.Model.*
 import com.ecosnap.R
 import com.ecosnap.fragments.CameraFragment
@@ -106,7 +104,6 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
 
     fun initHistoryFragment() {
         val history = History(this.dbData)
-        println(this.dbData)
 //        val historyItem_1 = HistoryItem("Soda Can", R.drawable.sodacan, "74%", R.drawable.ic_pass)
 //        val historyItem_2 = HistoryItem("Glass Bottle", R.drawable.glassbottle, "87%", R.drawable.ic_pass)
 //        val historyItem_3 = HistoryItem("Stuffed Animal", R.drawable.teddybear, "91%", R.drawable.ic_reject)

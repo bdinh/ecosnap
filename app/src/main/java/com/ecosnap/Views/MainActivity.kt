@@ -12,7 +12,6 @@ import android.support.v4.app.ActivityCompat
 import android.util.Log
 import com.ecosnap.*
 import com.ecosnap.Controller.fbDatabase.insertHistoryItem
-import com.ecosnap.Controller.fbDatabase.test
 import com.ecosnap.Model.*
 import com.ecosnap.R
 import com.ecosnap.fragments.CameraFragment

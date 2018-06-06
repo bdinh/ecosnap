@@ -23,7 +23,11 @@ class LoginActivity : AppCompatActivity() {
         initializeLoginActivity()
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        fbAuth = FirebaseAuth.getInstance()
+        handleUserIsSignedIn(fbAuth.currentUser)
+    }
 
     fun initializeLoginActivity() {
         fbAuth = FirebaseAuth.getInstance()
@@ -43,7 +47,6 @@ class LoginActivity : AppCompatActivity() {
     fun handleUserIsSignedIn(user: FirebaseUser?) {
         if (user != null) {
             val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("id", fbAuth.currentUser?.email)
             startActivity(intent)
         }
     }

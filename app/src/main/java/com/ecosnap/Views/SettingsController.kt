@@ -21,7 +21,7 @@ class SettingsController: AppCompatActivity(), CredentialsFragment.OnCredentials
         fbAuth = FirebaseAuth.getInstance()
         val title = intent.getSerializableExtra("title") as String
         when (title) {
-            "Credentials" -> {
+            "General" -> {
                 val credentialsFragment = CredentialsFragment()
                 credentialsFragment.arguments = intent.extras
                 val fm = fragmentManager

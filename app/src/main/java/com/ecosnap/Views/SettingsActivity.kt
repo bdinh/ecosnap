@@ -19,9 +19,10 @@ class SettingsActivity: AppCompatActivity(), CredentialsFragment.OnCredentialsFr
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 //        fbAuth = FirebaseAuth.getInstance()
-        val credentials = SettingsItem("Credentials", ResourcesCompat.getDrawable(getResources(), R.drawable.ic_credentials, null)!!)
+        val general = SettingsItem("General", ResourcesCompat.getDrawable(getResources(), R.drawable.ic_person, null)!!)
+        val security = SettingsItem("Security", ResourcesCompat.getDrawable(getResources(), R.drawable.ic_credentials, null)!!)
         val logout = SettingsItem("Logout", ResourcesCompat.getDrawable(getResources(), R.drawable.ic_logout, null)!!)
-        val settings = Settings(arrayOf(credentials, logout))
+        val settings = Settings(arrayOf(general, security, logout))
 
         settings_recycler_view.layoutManager = LinearLayoutManager(this)
         settings_recycler_view.adapter = SettingsRecyclerViewAdapter(settings)

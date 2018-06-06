@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat
 import android.util.Log
 import com.ecosnap.*
 import com.ecosnap.Controller.fbDatabase.insertHistoryItem
+import com.ecosnap.Controller.updateProfileChartData
 import com.ecosnap.Controller.updateProfileDayData
 import com.ecosnap.Model.*
 import com.ecosnap.R
@@ -86,6 +87,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     fun initProfileFragment() {
         val args = Bundle()
         args.putSerializable("user", profile)
+        args.putSerializable("profileData", profileChartData)
         val profileFragment = ProfileFragment()
         profileFragment.arguments = args
         val fm = supportFragmentManager
@@ -170,7 +172,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
                     }
                 }
                 dbData.reverse()
-                updateProfileDayData(dbData)
+                profileChartData = updateProfileChartData(dbData)
             }
 
             override fun onCancelled(p0: DatabaseError) {

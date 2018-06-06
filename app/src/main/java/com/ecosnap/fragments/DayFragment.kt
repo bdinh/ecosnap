@@ -9,22 +9,24 @@ import com.ecosnap.R
 import kotlinx.android.synthetic.main.fragment_day.view.*
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import com.ecosnap.Model.DayChartData
 
 class DayFragment : Fragment() {
-    private var test = ""
+    private lateinit var dayData: DayChartData
     private var content = ""
 
-    fun newInstance(str: String): DayFragment {
+    fun newInstance(str: String, dayData: DayChartData): DayFragment {
         val dayFragment= DayFragment()
         val args = Bundle()
         args.putString("day", str)
+        args.putSerializable("data", dayData)
         dayFragment.arguments = args
         return dayFragment
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        test = arguments?.getSerializable("day") as String
+        dayData = arguments?.getSerializable("data") as DayChartData
         content = ("<html>"
                 + "  <head>"
                 + "    <style>"
@@ -38,8 +40,8 @@ class DayFragment : Fragment() {
                 + "      function drawChart() {"
                 + "        var data = google.visualization.arrayToDataTable(["
                 + "          ['Status', 'Count'],"
-                + "          ['Recyclable', 2],"
-                + "          ['Not Recyclable', 1]"
+                + "          ['Recyclable', " + dayData.dayR + "],"
+                + "          ['Not Recyclable', " + dayData.dayNR + "]"
                 + "        ]);"
                 + "        var options = {"
                 + "          pieHole: 0.4,"

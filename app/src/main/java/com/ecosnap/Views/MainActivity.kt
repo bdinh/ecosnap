@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat
 import android.util.Log
 import com.ecosnap.*
 import com.ecosnap.Controller.fbDatabase.insertHistoryItem
+import com.ecosnap.Controller.fbDatabase.test
 import com.ecosnap.Model.*
 import com.ecosnap.R
 import com.ecosnap.fragments.CameraFragment
@@ -133,7 +134,6 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     profile = dataSnapshot.getValue(UserProfile::class.java) as UserProfile
-                    Log.i("databaseTest", profile.email + " " + profile.firstName)
                 }
             }
 
@@ -147,12 +147,9 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
                 if (dataSnapshot.exists()) {
                     dbData.clear()
                     dataSnapshot.children.mapNotNullTo(dbData) {
-                        val r: String = it.child("recyclable").getValue(String::class.java) as String
-                        val c: Float = it.child("confidence").getValue(Float::class.java) as Float
                         it.getValue(dbHistoryItem::class.java)
                     }
                 }
-                Log.i("databaseTest", dbData[0].recyclable.toString())
             }
 
             override fun onCancelled(p0: DatabaseError) {
@@ -160,7 +157,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
             }
         })
 
-        insertHistoryItem(dataRef, dbHistoryItem(true, 80.0F, "today", "somepath"))
+        insertHistoryItem(userID, dbHistoryItem(false, 80.0F, "today", "somepath"))
 
         btnLogout_M.setOnClickListener {
             handleSignOut()

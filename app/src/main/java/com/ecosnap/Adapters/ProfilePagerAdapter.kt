@@ -14,7 +14,7 @@ class ProfilePagerAdapter(fm: FragmentManager?, profileData: ProfileChartData) :
     override fun getItem(position: Int): Fragment? {
         when (position) {
             0 -> return DayFragment().newInstance("Day", data.dayData)
-            1 -> return WeekFragment().newInstance("Week")
+            1 -> return WeekFragment().newInstance("Week", data.weekData)
             else -> return MonthFragment().newInstance("Month")
         }
     }

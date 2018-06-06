@@ -11,6 +11,7 @@ import android.support.annotation.ColorRes
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import com.ecosnap.*
+import com.ecosnap.Controller.fbDatabase.insertHistoryItem
 import com.ecosnap.Model.*
 import com.ecosnap.R
 import com.ecosnap.fragments.CameraFragment
@@ -146,7 +147,9 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
                 if (dataSnapshot.exists()) {
                     dbData.clear()
                     dataSnapshot.children.mapNotNullTo(dbData) {
-                        it.getValue<dbHistoryItem>(dbHistoryItem::class.java)
+                        val r: String = it.child("recyclable").getValue(String::class.java) as String
+                        val c: Float = it.child("confidence").getValue(Float::class.java) as Float
+                        it.getValue(dbHistoryItem::class.java)
                     }
                 }
                 Log.i("databaseTest", dbData[0].recyclable.toString())
@@ -156,6 +159,8 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
                 Log.i("ECOSNAP FIREBASE", "firebase database retrieving history item error: " + p0.toString())
             }
         })
+
+        insertHistoryItem(dataRef, dbHistoryItem(true, 80.0F, "today", "somepath"))
 
         btnLogout_M.setOnClickListener {
             handleSignOut()

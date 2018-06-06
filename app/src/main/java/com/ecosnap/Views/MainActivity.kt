@@ -9,20 +9,26 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
 import android.support.v4.app.ActivityCompat
-import com.ecosnap.Model.Profile
+import android.util.Log
 import com.ecosnap.*
-import com.ecosnap.Model.DateHistory
-import com.ecosnap.Model.History
-import com.ecosnap.Model.HistoryItem
+import com.ecosnap.Model.*
+import com.ecosnap.R
 import com.ecosnap.fragments.CameraFragment
 import com.ecosnap.fragments.HistoryFragment
 import com.ecosnap.fragments.ProfileFragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, MapFragment.OnFragmentInteractionListener,
         HistoryFragment.OnHistoryFragmentInteractionListener, CameraFragment.OnCameraFragmentInteractionListener {
     private lateinit var fbAuth: FirebaseAuth
+    private lateinit var db: FirebaseDatabase
+    private lateinit var userID: String
+    private lateinit var profileRef: DatabaseReference
+    private lateinit var dataRef: DatabaseReference
+    private lateinit var profile: UserProfile
+    private var dbData: MutableList<dbHistoryItem> = mutableListOf()
 
     override fun onCaptureButton() {
     }
@@ -117,6 +123,40 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
 
     fun initializeMainActivity() {
         fbAuth = FirebaseAuth.getInstance()
+        userID = fbAuth.currentUser?.uid as String
+        db = FirebaseDatabase.getInstance()
+        profileRef = db.getReference("users").child(userID).child("profile")
+        dataRef = db.getReference("users").child(userID).child("data")
+
+        profileRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    profile = dataSnapshot.getValue(UserProfile::class.java) as UserProfile
+                    Log.i("databaseTest", profile.email + " " + profile.firstName)
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                Log.i("ECOSNAP FIREBASE", "firebase database retrieving profile error: " + p0.toString())
+            }
+        })
+
+        dataRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    dbData.clear()
+                    dataSnapshot.children.mapNotNullTo(dbData) {
+                        it.getValue<dbHistoryItem>(dbHistoryItem::class.java)
+                    }
+                }
+                Log.i("databaseTest", dbData[0].recyclable.toString())
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                Log.i("ECOSNAP FIREBASE", "firebase database retrieving history item error: " + p0.toString())
+            }
+        })
+
         btnLogout_M.setOnClickListener {
             handleSignOut()
         }

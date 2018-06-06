@@ -10,6 +10,10 @@ import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
 import android.support.v4.app.ActivityCompat
 import android.util.Log
+import com.ecosnap.*
+import com.ecosnap.Controller.fbDatabase.insertHistoryItem
+import com.ecosnap.Controller.updateProfileChartData
+import com.ecosnap.Controller.updateProfileDayData
 import com.ecosnap.Model.*
 import com.ecosnap.R
 import com.ecosnap.fragments.CameraFragment
@@ -28,6 +32,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     private lateinit var dataRef: DatabaseReference
     private lateinit var profile: UserProfile
     private var dbData = mutableListOf<DateHistory>()
+    private lateinit var profileChartData: ProfileChartData
 
     override fun onCaptureButton() {
     }
@@ -80,9 +85,9 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initProfileFragment() {
-        val profileExample = Profile("Aaron Nguyen", "Recycling newbie here! It’s about time that I started to care.", 0)
         val args = Bundle()
-        args.putSerializable("user", profileExample)
+        args.putSerializable("user", profile)
+        args.putSerializable("profileData", profileChartData)
         val profileFragment = ProfileFragment()
         profileFragment.arguments = args
         val fm = supportFragmentManager
@@ -167,6 +172,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
                     }
                 }
                 dbData.reverse()
+                profileChartData = updateProfileChartData(dbData)
             }
 
             override fun onCancelled(p0: DatabaseError) {
@@ -184,5 +190,6 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
+
 }
 

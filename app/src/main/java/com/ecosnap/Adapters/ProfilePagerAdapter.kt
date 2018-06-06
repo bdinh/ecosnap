@@ -3,18 +3,22 @@ package com.ecosnap.Adapters
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import com.ecosnap.Controller.getChartString
+import com.ecosnap.Model.ProfileChartData
 import com.ecosnap.fragments.DayFragment
 import com.ecosnap.fragments.MonthFragment
 import com.ecosnap.fragments.WeekFragment
 
-class ProfilePagerAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {
+class ProfilePagerAdapter(fm: FragmentManager?, profileData: ProfileChartData) : FragmentStatePagerAdapter(fm) {
     private val ITEMS = 3
-
+    val data = profileData
+    val weekDataString = getChartString(data.weekData.weekData)
+    val monthDataString = getChartString(data.monthData.monthData)
     override fun getItem(position: Int): Fragment? {
         when (position) {
-            0 -> return DayFragment().newInstance("Day")
-            1 -> return WeekFragment().newInstance("Week")
-            else -> return MonthFragment().newInstance("Month")
+            0 -> return DayFragment().newInstance(data.dayData)
+            1 -> return WeekFragment().newInstance(weekDataString)
+            else -> return MonthFragment().newInstance(monthDataString)
         }
     }
 

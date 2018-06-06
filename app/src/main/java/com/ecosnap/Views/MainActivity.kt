@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
             }
         })
 
-        insertHistoryItem(userID, dbHistoryItem(false, 80.0F, "today", "somepath"))
+        insertHistoryItem(userID, dbHistoryItem("recyclable", 80.0F, "today", "somepath"))
 
         btnLogout_M.setOnClickListener {
             handleSignOut()

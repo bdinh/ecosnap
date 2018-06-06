@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 class SettingsController: AppCompatActivity(), CredentialsFragment.OnCredentialsFragmentInteractionListener {
 
     override fun onCredentialsSelected() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     private lateinit var fbAuth: FirebaseAuth
@@ -29,17 +29,14 @@ class SettingsController: AppCompatActivity(), CredentialsFragment.OnCredentials
                 transaction.replace(R.id.settings_frame, credentialsFragment)
                 transaction.commit()
             }
+            "Security" -> {
+
+            }
             "Logout" -> {
                 this.handleSignOut(fbAuth)
             }
         }
     }
-
-//    fun initializeSettingsActivity(fbAuth: FirebaseAuth) {
-//        settings_Logout.setOnClickListener {
-//            handleSignOut(fbAuth)
-//        }
-//    }
 
     fun handleSignOut(fbAuth: FirebaseAuth) {
         fbAuth.signOut()

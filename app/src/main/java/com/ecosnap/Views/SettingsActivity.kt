@@ -13,12 +13,9 @@ import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity: AppCompatActivity(), CredentialsFragment.OnCredentialsFragmentInteractionListener {
 
-//    private lateinit var fbAuth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-//        fbAuth = FirebaseAuth.getInstance()
         val general = SettingsItem("General", ResourcesCompat.getDrawable(getResources(), R.drawable.ic_person, null)!!)
         val security = SettingsItem("Security", ResourcesCompat.getDrawable(getResources(), R.drawable.ic_credentials, null)!!)
         val logout = SettingsItem("Logout", ResourcesCompat.getDrawable(getResources(), R.drawable.ic_logout, null)!!)
@@ -26,23 +23,10 @@ class SettingsActivity: AppCompatActivity(), CredentialsFragment.OnCredentialsFr
 
         settings_recycler_view.layoutManager = LinearLayoutManager(this)
         settings_recycler_view.adapter = SettingsRecyclerViewAdapter(settings)
-//        initializeSettingsActivity(fbAuth)
     }
 
     override fun onCredentialsSelected() {
 
     }
 
-
-//    fun initializeSettingsActivity(fbAuth: FirebaseAuth) {
-//        settings_Logout.setOnClickListener {
-//            handleSignOut(fbAuth)
-//        }
-//    }
-//
-//    fun handleSignOut(fbAuth: FirebaseAuth) {
-//        fbAuth.signOut()
-//        val intent = Intent(this, LoginActivity::class.java)
-//        startActivity(intent)
-//    }
 }

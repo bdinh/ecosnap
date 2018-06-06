@@ -34,18 +34,6 @@ class CredentialsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view =  inflater!!.inflate(R.layout.fragment_credentials, container, false)
-//        fbAuth = FirebaseAuth.getInstance()
-//        val user = fbAuth.currentUser
-//        view.creds_Email.setText(user?.email)
-//        view.btn_Creds_Save.setOnClickListener {
-//            editCredentials(user)
-//            val intent = Intent(view.context, SettingsActivity::class.java)
-//            view.context.startActivity(intent)
-//        }
-//        view.btn_Creds_Cancel.setOnClickListener {
-//            val intent = Intent(view.context, SettingsActivity::class.java)
-//            view.context.startActivity(intent)
-//        }
         initalizeCredentialsActivity(view)
         return view
     }
@@ -55,7 +43,7 @@ class CredentialsFragment : Fragment() {
         val user = fbAuth.currentUser
         view.creds_Email.setText(user?.email)
         view.btn_Creds_Save.setOnClickListener {
-            editCredentials(user)
+            editCredentials(user, view)
             val intent = Intent(view.context, SettingsActivity::class.java)
             view.context.startActivity(intent)
         }
@@ -63,41 +51,25 @@ class CredentialsFragment : Fragment() {
             val intent = Intent(view.context, SettingsActivity::class.java)
             view.context.startActivity(intent)
         }
-        userID = fbAuth.currentUser?.uid as String
         db = FirebaseDatabase.getInstance()
+        userID = fbAuth.currentUser?.uid as String
         profileRef = db.getReference("users").child(userID).child("profile")
-        dataRef = db.getReference("users").child(userID).child("data")
-
         profileRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     profile = dataSnapshot.getValue(UserProfile::class.java) as UserProfile
+                    view.creds_last_name.setText(profile.lastName)
+                    view.creds_first_name.setText(profile.firstName)
                 }
             }
-
             override fun onCancelled(p0: DatabaseError) {
                 Log.i("ECOSNAP FIREBASE", "firebase database retrieving profile error: " + p0.toString())
             }
         })
 
-        view.creds_last_name.setText(profile.firstName)
-        view.creds_first_name.setText(profile.lastName)
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        if (context is OnCredentialsFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnCredentialsFragmentInteractionListener")
-        }
-    }
-
-    fun editCredentials(user: FirebaseUser?) {
+    fun editCredentials(user: FirebaseUser?, view: View) {
         val email = creds_Email.getText().toString()
         val password = creds_Password.getText().toString()
         user?.updateEmail(email)?.addOnCompleteListener { task ->
@@ -112,7 +84,22 @@ class CredentialsFragment : Fragment() {
                 }
             }
         }
+        profileRef.child("firstName").setValue(view.creds_first_name.getText().toString());
+        profileRef.child("lastName").setValue(view.creds_last_name.getText().toString());
+        profileRef.child("email").setValue(view.creds_Email.getText().toString());
+    }
 
+    override fun onDetach() {
+        super.onDetach()
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is OnCredentialsFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnCredentialsFragmentInteractionListener")
+        }
     }
 
     interface OnCredentialsFragmentInteractionListener {

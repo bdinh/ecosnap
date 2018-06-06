@@ -32,35 +32,41 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="47dp"
-        android:layout_marginBottom="64dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/colorPrimary"
-        android:text="Logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        app:layout_constraintVertical_bias="0.959" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/settings_recycler_view"
-        android:layout_width="358dp"
-        android:layout_height="317dp"
+    <FrameLayout
+        android:id="@+id/settings_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogout"
+        android:layout_marginTop="8dp"
+        android:background="#EEEEEE"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        app:layout_constraintVertical_bias="0.512"></android.support.v7.widget.RecyclerView>
+        app:layout_constraintVertical_bias="0.0"
+        tools:background="#EFEFEF">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/settings_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="487dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.109">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </FrameLayout>
 
 
 </android.support.constraint.ConstraintLayout>

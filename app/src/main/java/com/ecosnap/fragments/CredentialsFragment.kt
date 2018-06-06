@@ -2,7 +2,9 @@ package com.ecosnap.fragments
 
 import android.app.Fragment
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import com.ecosnap.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.fragment_credentials.*
+import kotlinx.android.synthetic.main.fragment_credentials.view.*
 
 class CredentialsFragment : Fragment() {
     private var listener: OnCredentialsFragmentInteractionListener? = null
@@ -17,19 +20,23 @@ class CredentialsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fbAuth = FirebaseAuth.getInstance()
-        val user = fbAuth.currentUser
-        creds_Email.setText(user?.email)
-        btn_Creds_Save.setOnClickListener {
-            editCredentials(user)
-        }
-        btn_Creds_Cancel.setOnClickListener {
-
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater!!.inflate(R.layout.fragment_credentials, container, false)
+        val view =  inflater!!.inflate(R.layout.fragment_credentials, container, false)
+        fbAuth = FirebaseAuth.getInstance()
+        val user = fbAuth.currentUser
+        view.creds_Email.setText(user?.email)
+        view.btn_Creds_Save.setOnClickListener {
+            editCredentials(user)
+            val intent = Intent(view.context, Settings::class.java)
+            view.context.startActivity(intent)
+        }
+        view.btn_Creds_Cancel.setOnClickListener {
+            val intent = Intent(view.context, Settings::class.java)
+            view.context.startActivity(intent)
+        }
+        return view
     }
 
     override fun onDetach() {

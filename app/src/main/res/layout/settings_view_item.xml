@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    tools:layout_editor_absoluteY="25dp">
 
 
     <ImageView
@@ -14,17 +15,17 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
         android:scaleType="centerCrop"
-        app:layout_constraintEnd_toStartOf="@+id/textView5"
+        app:layout_constraintEnd_toStartOf="@+id/settings_item_title"
         app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_camera" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/settings_item_title"
         android:layout_width="233dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="36dp"
         android:layout_marginTop="48dp"
         android:text="TextView"
         android:textSize="24sp"

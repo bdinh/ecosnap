@@ -10,20 +10,20 @@ import com.ecosnap.R
 import kotlinx.android.synthetic.main.fragment_month.view.*
 
 class MonthFragment : Fragment() {
-    private var test = ""
+    private lateinit var dataString: String
     private var content = ""
 
-    fun newInstance(str: String): MonthFragment {
+    fun newInstance(dataString: String): MonthFragment {
         val monthFragment= MonthFragment()
         val args = Bundle()
-        args.putString("month", str)
+        args.putString("data", dataString)
         monthFragment.arguments = args
         return monthFragment
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        test = arguments?.getSerializable("month") as String
+        dataString = arguments?.getSerializable("data") as String
         content = ("<html>"
                 + "  <head>"
                 + "    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>"
@@ -32,11 +32,8 @@ class MonthFragment : Fragment() {
                 + "      google.charts.setOnLoadCallback(drawChart);"
                 + "      function drawChart() {"
                 + "        var data = google.visualization.arrayToDataTable(["
-                + "          ['Dates', 'Recyclable', 'Not Recyclable'],"
-                + "          ['March', 15, 21],"
-                + "          ['April', 20, 9],"
-                + "          ['May', 13, 12],"
-                + "          ['June', 17, 11]"
+                + "         ['Dates', 'Recyclable', 'Not Recyclable'],"
+                +           dataString
                 + "        ]);"
                 + "        var options = {"
                 + "          chartArea: {left: 72, top: 32},"

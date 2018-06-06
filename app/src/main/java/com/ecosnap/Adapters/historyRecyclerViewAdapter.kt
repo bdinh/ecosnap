@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.ecosnap.Model.DateHistory
 import com.ecosnap.R
 import kotlinx.android.synthetic.main.history_view_item.view.*
@@ -44,7 +45,8 @@ class HistoryRecyclerViewAdapter(val historyData: DateHistory) : RecyclerView.Ad
         val file = File(historyItem.imgPath)
         if (file.exists()) {
             val bitMap = BitmapFactory.decodeFile(file.absolutePath)
-            holder.history_item_image_picture.setImageBitmap(bitMap)
+            Glide.with(context).load(bitMap).into(holder.history_item_image_picture)
+//            holder.history_item_image_picture.setImageBitmap(bitMap)
         }
         val formattedFloat = "%.2f".format(historyItem.confidence) + "%"
         holder.history_item_text_percentage.setText(formattedFloat)

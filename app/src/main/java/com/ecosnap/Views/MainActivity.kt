@@ -190,5 +190,6 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
+
 }
 

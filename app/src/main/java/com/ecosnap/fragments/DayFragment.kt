@@ -15,10 +15,9 @@ class DayFragment : Fragment() {
     private lateinit var dayData: DayChartData
     private var content = ""
 
-    fun newInstance(str: String, dayData: DayChartData): DayFragment {
+    fun newInstance(dayData: DayChartData): DayFragment {
         val dayFragment= DayFragment()
         val args = Bundle()
-        args.putString("day", str)
         args.putSerializable("data", dayData)
         dayFragment.arguments = args
         return dayFragment

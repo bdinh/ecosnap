@@ -11,21 +11,20 @@ import com.ecosnap.R
 import kotlinx.android.synthetic.main.fragment_week.view.*
 
 class WeekFragment : Fragment() {
-    private lateinit var data: WeekChartData
+    private lateinit var dataString: String
     private var content = ""
 
-    fun newInstance(str: String, data: WeekChartData): WeekFragment {
+    fun newInstance(dataString: String): WeekFragment {
         val weekFragment= WeekFragment()
         val args = Bundle()
-        args.putString("week", str)
-        args.putSerializable("data", data)
+        args.putString("data", dataString)
         weekFragment.arguments = args
         return weekFragment
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        data = arguments?.getSerializable("data") as WeekChartData
+        dataString = arguments?.getString("data") as String
         content = ("<html>"
                 + "  <head>"
                 + "    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>"
@@ -34,14 +33,8 @@ class WeekFragment : Fragment() {
                 + "      google.charts.setOnLoadCallback(drawChart);"
                 + "      function drawChart() {"
                 + "        var data = google.visualization.arrayToDataTable(["
-                + "          ['Dates', 'Recyclable', 'Not Recyclable'],"
-                + "          ['" + data.weekData[6].date + "'," + data.weekData[6].dayR + ", " + data.weekData[6].dayNR + "],"
-                + "          ['" + data.weekData[5].date + "', " + data.weekData[5].dayR + ", " + data.weekData[5].dayNR + "],"
-                + "          ['" + data.weekData[4].date + "', " + data.weekData[4].dayR + ", " + data.weekData[4].dayNR + "],"
-                + "          ['" + data.weekData[3].date + "', " + data.weekData[3].dayR + ", " + data.weekData[3].dayNR + "],"
-                + "          ['" + data.weekData[2].date + "', " + data.weekData[2].dayR + ", " + data.weekData[2].dayNR + "],"
-                + "          ['" + data.weekData[1].date + "', " + data.weekData[1].dayR + ", " + data.weekData[1].dayNR + "],"
-                + "          ['" + data.weekData[0].date + "', " + data.weekData[0].dayR + ", " + data.weekData[0].dayNR + "]"
+                + "          ['Dates', 'Recyclable', 'Not Recyclable'], "
+                +           dataString
                 + "        ]);"
                 + "        var options = {"
                 + "          chartArea: {left: 72, top: 32},"

@@ -10,6 +10,9 @@ import android.widget.TextView
 import com.ecosnap.Model.History
 import com.ecosnap.R
 import kotlinx.android.synthetic.main.section_history_view_list.view.*
+import org.ocpsoft.prettytime.PrettyTime
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SectionHistoryRecyclerViewAdapter(val context: Context, val historyData: History) : RecyclerView.Adapter<CustomSectionHistoryViewHolder>() {
 
@@ -25,7 +28,12 @@ class SectionHistoryRecyclerViewAdapter(val context: Context, val historyData: H
 
     override fun onBindViewHolder(holder: CustomSectionHistoryViewHolder, position: Int) {
         val dateHistory = historyData.data.get(position)
-        holder.section_history_text_label.setText(dateHistory.label)
+        val dateString = dateHistory.label
+        val p = PrettyTime()
+        val format = SimpleDateFormat("yyyyMMdd", Locale.ENGLISH)
+        val date = format.parse(dateString)
+        val prettyDate = p.format(date)
+        holder.section_history_text_label.setText(prettyDate)
         holder.section_history_recycler_view.layoutManager = GridLayoutManager(this.context, 2)
         holder.section_history_recycler_view.adapter = HistoryRecyclerViewAdapter(dateHistory)
     }

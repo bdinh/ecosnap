@@ -1,5 +1,7 @@
 package com.ecosnap.Adapters
 
+import android.content.Context
+import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +11,16 @@ import android.widget.TextView
 import com.ecosnap.Model.DateHistory
 import com.ecosnap.R
 import kotlinx.android.synthetic.main.history_view_item.view.*
+import java.io.File
 
 class HistoryRecyclerViewAdapter(val historyData: DateHistory) : RecyclerView.Adapter<CustomHistoryViewItemHolder>() {
+
+    private lateinit var context: Context
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomHistoryViewItemHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val cellForRow = layoutInflater.inflate(R.layout.history_view_item, parent, false)
+        this.context = parent.context
         return CustomHistoryViewItemHolder(cellForRow)
     }
 
@@ -21,12 +28,26 @@ class HistoryRecyclerViewAdapter(val historyData: DateHistory) : RecyclerView.Ad
         return historyData.historyList.size
     }
 
+    override fun onViewRecycled(holder: CustomHistoryViewItemHolder) {
+        super.onViewRecycled(holder)
+    }
+
     override fun onBindViewHolder(holder: CustomHistoryViewItemHolder, position: Int) {
-//        val historyItem = historyData.historyList.get(position)
-//        holder.history_item_text_name.setText(historyItem.name)
-//        holder.history_item_image_picture.setImageResource(historyItem.src)
-//        holder.history_item_text_percentage.setText(historyItem.percentage)
-//        holder.history_item_image_check.setImageResource(historyItem.isRecyclable)
+        val historyItem = historyData.historyList.get(position)
+        if (historyItem.type == "recyclable") {
+            holder.history_item_image_check.setImageResource(R.drawable.ic_pass)
+            holder.history_item_text_name.setText(context.resources.getString(R.string.recyclable))
+        } else {
+            holder.history_item_image_check.setImageResource(R.drawable.ic_reject)
+            holder.history_item_text_name.setText(context.resources.getString(R.string.nonrecyclable))
+        }
+        val file = File(historyItem.imgPath)
+        if (file.exists()) {
+            val bitMap = BitmapFactory.decodeFile(file.absolutePath)
+            holder.history_item_image_picture.setImageBitmap(bitMap)
+        }
+        val formattedFloat = "%.2f".format(historyItem.confidence) + "%"
+        holder.history_item_text_percentage.setText(formattedFloat)
     }
 
 }

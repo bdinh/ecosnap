@@ -7,4 +7,11 @@ class dbHistoryItem (
         val confidence: Float = 0.00F,
         val datetime: String = "",
         val imgPath: String = ""
-) : Serializable
+) : Serializable {
+    fun getRecyclable(): String {
+        if (this.recyclable) {
+            return "Recyclable"
+        }
+        return "Non-Recyclable"
+    }
+}

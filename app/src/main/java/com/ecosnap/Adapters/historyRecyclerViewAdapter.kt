@@ -22,11 +22,11 @@ class HistoryRecyclerViewAdapter(val historyData: DateHistory) : RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: CustomHistoryViewItemHolder, position: Int) {
-        val historyItem = historyData.historyList.get(position)
-        holder.history_item_text_name.setText(historyItem.name)
-        holder.history_item_image_picture.setImageResource(historyItem.src)
-        holder.history_item_text_percentage.setText(historyItem.percentage)
-        holder.history_item_image_check.setImageResource(historyItem.isRecyclable)
+//        val historyItem = historyData.historyList.get(position)
+//        holder.history_item_text_name.setText(historyItem.name)
+//        holder.history_item_image_picture.setImageResource(historyItem.src)
+//        holder.history_item_text_percentage.setText(historyItem.percentage)
+//        holder.history_item_image_check.setImageResource(historyItem.isRecyclable)
     }
 
 }

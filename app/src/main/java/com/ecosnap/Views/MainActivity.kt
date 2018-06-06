@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     private lateinit var profileRef: DatabaseReference
     private lateinit var dataRef: DatabaseReference
     private lateinit var profile: UserProfile
-    private var dbData: MutableList<dbHistoryItem> = mutableListOf()
+    private var dbData = mutableListOf<DateHistory>()
 
     override fun onCaptureButton() {
     }
@@ -102,20 +102,20 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initHistoryFragment() {
-        val historyItem_1 = HistoryItem("Soda Can", R.drawable.sodacan, "74%", R.drawable.ic_pass)
-        val historyItem_2 = HistoryItem("Glass Bottle", R.drawable.glassbottle, "87%", R.drawable.ic_pass)
-        val historyItem_3 = HistoryItem("Stuffed Animal", R.drawable.teddybear, "91%", R.drawable.ic_reject)
-        val dateHistory_1 = DateHistory("Today", arrayOf(historyItem_1, historyItem_2, historyItem_3))
-        val dateHistory_2 = DateHistory("Yesterday", arrayOf(historyItem_1, historyItem_2, historyItem_3))
-        val history = History(arrayOf(dateHistory_1, dateHistory_2))
-        val args = Bundle()
-        args.putSerializable("history", history)
-        val historyFragment = HistoryFragment()
-        historyFragment.arguments = args
-        val fm = supportFragmentManager
-        val transaction = fm.beginTransaction()
-        transaction.replace(R.id.frame, historyFragment)
-        transaction.commit()
+//        val historyItem_1 = HistoryItem("Soda Can", R.drawable.sodacan, "74%", R.drawable.ic_pass)
+//        val historyItem_2 = HistoryItem("Glass Bottle", R.drawable.glassbottle, "87%", R.drawable.ic_pass)
+//        val historyItem_3 = HistoryItem("Stuffed Animal", R.drawable.teddybear, "91%", R.drawable.ic_reject)
+//        val dateHistory_1 = DateHistory("Today", arrayOf(historyItem_1, historyItem_2, historyItem_3))
+//        val dateHistory_2 = DateHistory("Yesterday", arrayOf(historyItem_1, historyItem_2, historyItem_3))
+//        val history = History(arrayOf(dateHistory_1, dateHistory_2))
+//        val args = Bundle()
+//        args.putSerializable("history", history)
+//        val historyFragment = HistoryFragment()
+//        historyFragment.arguments = args
+//        val fm = supportFragmentManager
+//        val transaction = fm.beginTransaction()
+//        transaction.replace(R.id.frame, historyFragment)
+//        transaction.commit()
     }
 
     fun fetchColor(@ColorRes color: Int): Int {
@@ -145,8 +145,15 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     dbData.clear()
-                    dataSnapshot.children.mapNotNullTo(dbData) {
-                        it.getValue(dbHistoryItem::class.java)
+                    dataSnapshot.children.forEach {
+                        val key = it.key as String
+                        val items: MutableList<dbHistoryItem> = mutableListOf()
+                        val map = it.value as Map<String, dbHistoryItem>
+                        map.forEach {
+                            items.add(it.value)
+                        }
+                        val dh = DateHistory(key, items)
+                        dbData.add(dh)
                     }
                 }
             }
@@ -155,8 +162,6 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
                 Log.i("ECOSNAP FIREBASE", "firebase database retrieving history item error: " + p0.toString())
             }
         })
-
-        insertHistoryItem(userID, dbHistoryItem("recyclable", 80.0F, "today", "somepath"))
 
         btnLogout_M.setOnClickListener {
             handleSignOut()

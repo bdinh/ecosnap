@@ -8,3 +8,4 @@ class dbHistoryItem (
         val datetime: String = "",
         val imgPath: String = ""
 ) : Serializable
+

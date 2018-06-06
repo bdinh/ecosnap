@@ -94,7 +94,10 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initCameraFragment() {
+        val args = Bundle()
+        args.putString("userID", this.userID)
         val cameraFragment = CameraFragment()
+        cameraFragment.arguments = args
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
         transaction.replace(R.id.frame, cameraFragment)
@@ -102,20 +105,22 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initHistoryFragment() {
+        val history = History(this.dbData)
+        println(this.dbData)
 //        val historyItem_1 = HistoryItem("Soda Can", R.drawable.sodacan, "74%", R.drawable.ic_pass)
 //        val historyItem_2 = HistoryItem("Glass Bottle", R.drawable.glassbottle, "87%", R.drawable.ic_pass)
 //        val historyItem_3 = HistoryItem("Stuffed Animal", R.drawable.teddybear, "91%", R.drawable.ic_reject)
 //        val dateHistory_1 = DateHistory("Today", arrayOf(historyItem_1, historyItem_2, historyItem_3))
 //        val dateHistory_2 = DateHistory("Yesterday", arrayOf(historyItem_1, historyItem_2, historyItem_3))
 //        val history = History(arrayOf(dateHistory_1, dateHistory_2))
-//        val args = Bundle()
-//        args.putSerializable("history", history)
-//        val historyFragment = HistoryFragment()
-//        historyFragment.arguments = args
-//        val fm = supportFragmentManager
-//        val transaction = fm.beginTransaction()
-//        transaction.replace(R.id.frame, historyFragment)
-//        transaction.commit()
+        val args = Bundle()
+        args.putSerializable("history", history)
+        val historyFragment = HistoryFragment()
+        historyFragment.arguments = args
+        val fm = supportFragmentManager
+        val transaction = fm.beginTransaction()
+        transaction.replace(R.id.frame, historyFragment)
+        transaction.commit()
     }
 
     fun fetchColor(@ColorRes color: Int): Int {
@@ -148,14 +153,23 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
                     dataSnapshot.children.forEach {
                         val key = it.key as String
                         val items: MutableList<dbHistoryItem> = mutableListOf()
-                        val map = it.value as Map<String, dbHistoryItem>
+                        val map = it.value as Map<String, Map<String, Any>>
                         map.forEach {
-                            items.add(it.value)
+                            val item = it.value
+                            val type = item.get("type") as String
+                            var confidence = item.get("confidence")
+                            val datetime = item.get("datetime") as String
+                            val imgpath = item.get("imgPath") as String
+                            val historyItem = dbHistoryItem(type, confidence.toString().toFloat(), datetime, imgpath)
+                            items.add(historyItem)
                         }
+                        items.sortWith(compareBy({it.datetime}))
+                        items.reverse()
                         val dh = DateHistory(key, items)
                         dbData.add(dh)
                     }
                 }
+                dbData.reverse()
             }
 
             override fun onCancelled(p0: DatabaseError) {

@@ -18,6 +18,8 @@ import android.util.Log
 import android.view.*
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
+import com.ecosnap.Controller.fbDatabase.insertHistoryItem
+import com.ecosnap.Model.dbHistoryItem
 import com.ecosnap.R
 import com.ecosnap.classifier.*
 import com.ecosnap.utils.getCroppedBitmap
@@ -36,6 +38,9 @@ class CameraFragment : Fragment() {
     private lateinit var classifier: Classifier
     private val MAX_PREVIEW_WIDTH = 1280
     private val MAX_PREVIEW_HEIGHT = 720
+    private lateinit var userID: String
+    private lateinit var timeStamp: String
+    private lateinit var filePath: String
     private lateinit var captureSession: CameraCaptureSession
     private lateinit var captureRequestBuilder: CaptureRequest.Builder
     private lateinit var cameraDevice: CameraDevice
@@ -198,6 +203,7 @@ class CameraFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            this.userID = arguments?.getString("userID") as String
         }
         classifier = ImageClassifierFactory.create(
                 context?.assets as AssetManager,
@@ -303,6 +309,7 @@ class CameraFragment : Fragment() {
         var outputFile: File? = null
         try {
             outputFile = createImageFile(galleryFolder)
+            this.filePath = outputFile.toString()
             outputPhoto = FileOutputStream(outputFile)
             camera_texture_view.getBitmap()
                     .compress(Bitmap.CompressFormat.PNG, 100, outputPhoto)
@@ -352,8 +359,8 @@ class CameraFragment : Fragment() {
     }
 
     private fun createImageFile(galleryFolder: File) :File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val imageFileName: String = "image_" + timeStamp + "_"
+        this.timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val imageFileName: String = "image_" + this.timeStamp + "_"
         return File.createTempFile(imageFileName, ".jpg", galleryFolder)
 
     }
@@ -377,15 +384,15 @@ class CameraFragment : Fragment() {
                         camera_label_icon.setImageResource(R.drawable.ic_pass)
                         image_camera_label.setTextColor(Color.GREEN)
                         image_camera_label.text = resources.getString(R.string.recyclable)
-
                     } else {
                         camera_label_icon.setImageResource(R.drawable.ic_reject)
                         image_camera_label.setTextColor(Color.RED)
                         image_camera_label.text = resources.getString(R.string.nonrecyclable)
                     }
                     image_camera_label_confidence.text = "Confidence: " + confidenceRounded + "%"
+                    val historyItem = dbHistoryItem(result.result, confidenceRounded, this.timeStamp, this.filePath)
+                    insertHistoryItem(this.userID, historyItem)
                     showLabels()
-                    println(result)
                 })
     }
 

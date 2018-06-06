@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     private lateinit var dataRef: DatabaseReference
     private lateinit var profile: UserProfile
     private var dbData = mutableListOf<DateHistory>()
-    private var profileChartData = ProfileChartData()
+    private lateinit var profileChartData: ProfileChartData
 
     override fun onCaptureButton() {
     }

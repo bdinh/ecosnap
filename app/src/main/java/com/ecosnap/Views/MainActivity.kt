@@ -9,20 +9,25 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
 import android.support.v4.app.ActivityCompat
-import com.ecosnap.Model.Profile
-import com.ecosnap.*
-import com.ecosnap.Model.DateHistory
-import com.ecosnap.Model.History
-import com.ecosnap.Model.HistoryItem
+import android.util.Log
+import com.ecosnap.Model.*
+import com.ecosnap.R
 import com.ecosnap.fragments.CameraFragment
 import com.ecosnap.fragments.HistoryFragment
 import com.ecosnap.fragments.ProfileFragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, MapFragment.OnFragmentInteractionListener,
         HistoryFragment.OnHistoryFragmentInteractionListener, CameraFragment.OnCameraFragmentInteractionListener {
     private lateinit var fbAuth: FirebaseAuth
+    private lateinit var db: FirebaseDatabase
+    private lateinit var userID: String
+    private lateinit var profileRef: DatabaseReference
+    private lateinit var dataRef: DatabaseReference
+    private lateinit var profile: UserProfile
+    private var dbData = mutableListOf<DateHistory>()
 
     override fun onCaptureButton() {
     }
@@ -87,7 +92,10 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initCameraFragment() {
+        val args = Bundle()
+        args.putString("userID", this.userID)
         val cameraFragment = CameraFragment()
+        cameraFragment.arguments = args
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
         transaction.replace(R.id.frame, cameraFragment)
@@ -95,12 +103,13 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initHistoryFragment() {
-        val historyItem_1 = HistoryItem("Soda Can", R.drawable.sodacan, "74%", R.drawable.ic_pass)
-        val historyItem_2 = HistoryItem("Glass Bottle", R.drawable.glassbottle, "87%", R.drawable.ic_pass)
-        val historyItem_3 = HistoryItem("Stuffed Animal", R.drawable.teddybear, "91%", R.drawable.ic_reject)
-        val dateHistory_1 = DateHistory("Today", arrayOf(historyItem_1, historyItem_2, historyItem_3))
-        val dateHistory_2 = DateHistory("Yesterday", arrayOf(historyItem_1, historyItem_2, historyItem_3))
-        val history = History(arrayOf(dateHistory_1, dateHistory_2))
+        val history = History(this.dbData)
+//        val historyItem_1 = HistoryItem("Soda Can", R.drawable.sodacan, "74%", R.drawable.ic_pass)
+//        val historyItem_2 = HistoryItem("Glass Bottle", R.drawable.glassbottle, "87%", R.drawable.ic_pass)
+//        val historyItem_3 = HistoryItem("Stuffed Animal", R.drawable.teddybear, "91%", R.drawable.ic_reject)
+//        val dateHistory_1 = DateHistory("Today", arrayOf(historyItem_1, historyItem_2, historyItem_3))
+//        val dateHistory_2 = DateHistory("Yesterday", arrayOf(historyItem_1, historyItem_2, historyItem_3))
+//        val history = History(arrayOf(dateHistory_1, dateHistory_2))
         val args = Bundle()
         args.putSerializable("history", history)
         val historyFragment = HistoryFragment()
@@ -117,6 +126,54 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
 
     fun initializeMainActivity() {
         fbAuth = FirebaseAuth.getInstance()
+        userID = fbAuth.currentUser?.uid as String
+        db = FirebaseDatabase.getInstance()
+        profileRef = db.getReference("users").child(userID).child("profile")
+        dataRef = db.getReference("users").child(userID).child("data")
+
+        profileRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    profile = dataSnapshot.getValue(UserProfile::class.java) as UserProfile
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                Log.i("ECOSNAP FIREBASE", "firebase database retrieving profile error: " + p0.toString())
+            }
+        })
+
+        dataRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    dbData.clear()
+                    dataSnapshot.children.forEach {
+                        val key = it.key as String
+                        val items: MutableList<dbHistoryItem> = mutableListOf()
+                        val map = it.value as Map<String, Map<String, Any>>
+                        map.forEach {
+                            val item = it.value
+                            val type = item.get("type") as String
+                            var confidence = item.get("confidence")
+                            val datetime = item.get("datetime") as String
+                            val imgpath = item.get("imgPath") as String
+                            val historyItem = dbHistoryItem(type, confidence.toString().toFloat(), datetime, imgpath)
+                            items.add(historyItem)
+                        }
+                        items.sortWith(compareBy({it.datetime}))
+                        items.reverse()
+                        val dh = DateHistory(key, items)
+                        dbData.add(dh)
+                    }
+                }
+                dbData.reverse()
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                Log.i("ECOSNAP FIREBASE", "firebase database retrieving history item error: " + p0.toString())
+            }
+        })
+
         btnLogout_M.setOnClickListener {
             handleSignOut()
         }

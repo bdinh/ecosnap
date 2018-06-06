@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.ecosnap.Controller.fbDatabase.insertNewUserIntoDatabase
 import com.ecosnap.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_signup.*
 
@@ -20,6 +21,11 @@ class SignupActivity : AppCompatActivity() {
         initializeSignUpActivity()
     }
 
+    override fun onResume() {
+        super.onResume()
+        fbAuth = FirebaseAuth.getInstance()
+        handleUserIsSignedIn(fbAuth.currentUser)
+    }
 
     fun initializeSignUpActivity() {
         fbAuth = FirebaseAuth.getInstance()
@@ -47,7 +53,6 @@ class SignupActivity : AppCompatActivity() {
                         val userID = fbAuth.currentUser?.uid as String
                         insertNewUserIntoDatabase(db, firstName, lastName, email, userID)
                         val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra("id", userID)
                         startActivity(intent)
                     } else {
                         Toast.makeText(this, "error: " + task.exception?.message, Toast.LENGTH_LONG).show()
@@ -63,5 +68,10 @@ class SignupActivity : AppCompatActivity() {
         return true
     }
 
-
+    fun handleUserIsSignedIn(user: FirebaseUser?) {
+        if (user != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+    }
 }

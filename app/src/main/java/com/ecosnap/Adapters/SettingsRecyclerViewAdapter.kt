@@ -4,11 +4,8 @@ import android.content.Intent
 import android.view.View
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
 import com.ecosnap.R
-import com.ecosnap.Views.SettingsActivity
 import com.ecosnap.Views.SettingsController
 import kotlinx.android.synthetic.main.settings_view_item.view.*
 

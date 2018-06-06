@@ -8,7 +8,9 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.ecosnap.R
+import com.ecosnap.Views.SettingsActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.fragment_credentials.*
@@ -29,11 +31,11 @@ class CredentialsFragment : Fragment() {
         view.creds_Email.setText(user?.email)
         view.btn_Creds_Save.setOnClickListener {
             editCredentials(user)
-            val intent = Intent(view.context, Settings::class.java)
+            val intent = Intent(view.context, SettingsActivity::class.java)
             view.context.startActivity(intent)
         }
         view.btn_Creds_Cancel.setOnClickListener {
-            val intent = Intent(view.context, Settings::class.java)
+            val intent = Intent(view.context, SettingsActivity::class.java)
             view.context.startActivity(intent)
         }
         return view
@@ -57,12 +59,12 @@ class CredentialsFragment : Fragment() {
         val password = creds_Password.getText().toString()
         user?.updateEmail(email)?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-//                Toast.makeText(this, "Successfully updated user email", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Successfully updated user email", Toast.LENGTH_LONG).show()
             }
         }
         user?.updatePassword(password)?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-//                Toast.makeText(this, "Successfully update password", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Successfully update password", Toast.LENGTH_LONG).show()
             }
         }
     }

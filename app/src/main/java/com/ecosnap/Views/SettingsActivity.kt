@@ -26,13 +26,11 @@ class SettingsActivity: AppCompatActivity(), CredentialsFragment.OnCredentialsFr
 
         var userProfile = intent.getSerializableExtra("user")
         userProfile = userProfile as UserProfile
-        println(userProfile.firstName)
-        val test = UserProfile(userProfile.firstName, userProfile.lastName, userProfile.email)
         settings_close.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             this.startActivity(intent)
         }
         settings_recycler_view.layoutManager = LinearLayoutManager(this)
-        settings_recycler_view.adapter = SettingsRecyclerViewAdapter(settings, test)
+        settings_recycler_view.adapter = SettingsRecyclerViewAdapter(settings, userProfile)
     }
 }

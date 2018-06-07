@@ -51,9 +51,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         setContentView(R.layout.activity_main)
         createBottomNav()
         mapFragment = MapFragment()
-        historyFragment = HistoryFragment()
         cameraFragment = CameraFragment()
-        profileFragment = ProfileFragment()
         currFragment = cameraFragment
         initializeMainActivity()
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA,
@@ -138,6 +136,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         val history = History(this.dbData)
         val args = Bundle()
         args.putSerializable("history", history)
+        historyFragment = HistoryFragment()
         historyFragment.arguments = args
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()

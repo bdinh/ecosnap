@@ -41,7 +41,9 @@ class SettingsController: AppCompatActivity(), CredentialsFragment.OnCredentials
             }
             "Security" -> {
                 val credentialsFragment = CredentialsFragment()
-                credentialsFragment.arguments = intent.extras
+                val args = Bundle()
+                args.putSerializable("user", userProfile)
+                credentialsFragment.arguments = args
                 val transaction = fm.beginTransaction()
                 transaction.replace(R.id.settings_frame, credentialsFragment)
                 transaction.commit()

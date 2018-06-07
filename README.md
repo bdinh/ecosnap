@@ -31,9 +31,6 @@ You will most likely run into missing dependency warnings, feel free to install 
 Once the application is running, make sure you allow the application to access your camera and files. You're all set after you've reach this step. If you're struggling, feel free to submit an issue and one of us will gladly take a look at it.
 
 
-## Project Structure
-
-
 ## Future Updates
 Below are a list of updates that the team is currently working to support. 
 

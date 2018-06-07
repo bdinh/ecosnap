@@ -30,6 +30,7 @@ class ProfileFragment : Fragment() {
             profile = it.getSerializable("user") as UserProfile
             profileData = it.getSerializable("profileData") as ProfileChartData
         }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

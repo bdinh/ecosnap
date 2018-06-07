@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import com.ecosnap.Model.UserProfile
 import com.ecosnap.R
@@ -23,11 +24,20 @@ class CredentialsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view =  inflater!!.inflate(R.layout.fragment_credentials, container, false)
+        setListener(view.creds_last_name)
+        setListener(view.creds_Email)
+        setListener(view.creds_Password)
         arguments?.let {
             profile = it.getSerializable("user") as UserProfile
         }
         initalizeCredentialsActivity(view)
         return view
+    }
+
+    private fun setListener(e: EditText) {
+        e.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) {
+            e.setSelection(e.text.length)
+        } }
     }
 
     fun initalizeCredentialsActivity(view: View) {

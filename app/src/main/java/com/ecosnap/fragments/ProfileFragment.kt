@@ -18,6 +18,8 @@ import com.ecosnap.Views.SettingsActivity
 import kotlinx.android.synthetic.main.fragment_profile.*
 import com.ecosnap.Model.ProfileChartData
 import com.ecosnap.Model.UserProfile
+import com.ecosnap.R.drawable.*
+import com.ecosnap.R.mipmap.ic_launcher
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class ProfileFragment : Fragment() {
@@ -49,8 +51,12 @@ class ProfileFragment : Fragment() {
         view.tabs_profile.setupWithViewPager(view.vp_profile)
         view.txt_profile_title.text = profile.firstName + " " + profile.lastName
         view.txt_profile_bio.text = profile.descr
-        val uri = Uri.parse(profile.imgpath)
-        Glide.with(view.context).load(uri).into(view.img_profile_pict)
+        if (profile.imgpath == "") {
+            view.img_profile_pict.setImageDrawable(view.context.getDrawable(ic_launcher))
+        } else {
+            val uri = Uri.parse(profile.imgpath)
+            Glide.with(view.context).load(uri).into(view.img_profile_pict)
+        }
         return view
     }
 

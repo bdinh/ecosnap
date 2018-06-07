@@ -15,3 +15,8 @@ This application was created for our Android Mobile Development course to serve 
 ## Future Updates
 
 ## Meet the Team
+
+[Aaron Nguyen](https://github.com/aaronluannguyen "aaronluannguyen")
+[Bao Dinh](https://github.com/bdinh "bdinh")
+[Eric Jacobson](https://github.com/EJacobson96 "EJacobson96")
+[Wynston Hsu](https://github.com/wynhsu "wynhsu")

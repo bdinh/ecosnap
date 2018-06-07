@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.ecosnap.R
 import kotlinx.android.synthetic.main.fragment_day.view.*
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import com.ecosnap.Model.DayChartData
+import com.ecosnap.model.DayChartData
 
 class DayFragment : Fragment() {
     private lateinit var dayData: DayChartData

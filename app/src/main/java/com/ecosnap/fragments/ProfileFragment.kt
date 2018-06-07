@@ -5,18 +5,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ecosnap.Model.Profile
 import com.ecosnap.R
-import com.ecosnap.Adapters.ProfilePagerAdapter
-import com.ecosnap.Model.Settings
-import com.ecosnap.Views.SettingsActivity
-import kotlinx.android.synthetic.main.fragment_profile.*
-import com.ecosnap.Model.ProfileChartData
-import com.ecosnap.Model.UserProfile
+import com.ecosnap.adapters.ProfilePagerAdapter
+import com.ecosnap.activity.SettingsActivity
+import com.ecosnap.model.ProfileChartData
+import com.ecosnap.model.UserProfile
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class ProfileFragment : Fragment() {

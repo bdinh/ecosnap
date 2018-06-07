@@ -4,15 +4,14 @@ import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.ecosnap.Model.UserProfile
+import com.ecosnap.model.UserProfile
 import com.ecosnap.R
-import com.ecosnap.Views.SettingsActivity
+import com.ecosnap.activity.SettingsActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*

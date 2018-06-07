@@ -23,16 +23,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Views.MainActivity"
+        <activity android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
         />
-        <activity android:name=".Views.LoginActivity" android:screenOrientation="portrait">
+        <activity android:name=".activity.LoginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Views.SignupActivity"
+        <activity android:name=".activity.SignupActivity"
             android:screenOrientation="portrait"
         />
         <!--
@@ -46,8 +46,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity android:name=".Views.SettingsActivity" />
-        <activity android:name=".Views.SettingsController" />
+        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.SettingsControllerActivity" />
     </application>
 
 </manifest>

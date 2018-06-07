@@ -2,7 +2,7 @@ package com.ecosnap.classifier
 
 import android.content.res.AssetManager
 import android.graphics.Bitmap
-import com.ecosnap.utils.getLabels
+import com.ecosnap.util.getLabels
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface
 import java.io.Serializable
 import java.lang.Float

@@ -6,23 +6,17 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.app.Fragment
-import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ecosnap.Controller.fbDatabase.insertNewUserIntoDatabase
-import com.ecosnap.Model.UserProfile
-
+import com.ecosnap.controller.fbDatabase.insertNewUserIntoDatabase
+import com.ecosnap.model.UserProfile
 import com.ecosnap.R
-import com.ecosnap.Views.SettingsActivity
+import com.ecosnap.activity.SettingsActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_general.*
 import kotlinx.android.synthetic.main.fragment_general.view.*
-import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class GeneralFragment : Fragment() {

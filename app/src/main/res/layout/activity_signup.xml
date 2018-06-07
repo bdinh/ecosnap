@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_v"
 
-    tools:context=".Views.SignupActivity" >
+    tools:context=".activity.SignupActivity" >
 
     <EditText
         android:id="@+id/fName_SU"

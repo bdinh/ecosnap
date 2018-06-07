@@ -102,6 +102,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     fun initLocateFragment() {
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
+        mapFragment = MapFragment()
         transaction.remove(currFragment)
         currFragment = mapFragment
         transaction.add(R.id.frame, mapFragment)

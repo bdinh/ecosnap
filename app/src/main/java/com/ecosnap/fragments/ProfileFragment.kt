@@ -35,11 +35,12 @@ class ProfileFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-      
+
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         view.btnSettings.setOnClickListener {
             val intent = Intent(activity, SettingsActivity::class.java)
             intent.putExtra("user", profile)
+            intent.putExtra("profileData", profileData)
             view.context.startActivity(intent)
         }
         val mAdapter = ProfilePagerAdapter(fragmentManager, profileData)
@@ -47,7 +48,7 @@ class ProfileFragment : Fragment() {
         view.tabs_profile.setupWithViewPager(view.vp_profile)
         view.txt_profile_title.text = profile.firstName + " " + profile.lastName
         view.txt_profile_bio.text = profile.descr
-         view.img_profile_pict.setImageURI(Uri.parse(profile.imgpath))
+        view.img_profile_pict.setImageURI(Uri.parse(profile.imgpath))
         return view
     }
 

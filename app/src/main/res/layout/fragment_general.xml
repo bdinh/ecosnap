@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView_general"
+        android:id="@+id/setting_General_IMG"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginTop="24dp"
@@ -69,7 +69,7 @@
         android:textAllCaps="false"
         android:textColor="@color/navSelect"
         app:layout_constraintEnd_toEndOf="@+id/bio_general"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_general" />
+        app:layout_constraintTop_toBottomOf="@+id/setting_General_IMG" />
 
     <Button
         android:id="@+id/btn_cancel_general"
@@ -79,5 +79,5 @@
         android:background="@color/lightGray"
         android:text="CANCEL"
         app:layout_constraintStart_toStartOf="@+id/bio_general"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_general" />
+        app:layout_constraintTop_toBottomOf="@+id/setting_General_IMG" />
 </android.support.constraint.ConstraintLayout>

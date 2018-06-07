@@ -1,5 +1,6 @@
 package com.ecosnap.Views
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -43,8 +44,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     private lateinit var profileFragment: ProfileFragment
     private lateinit var currFragment: Fragment
 
-    override fun onCaptureButton() {
-    }
+    override fun onCaptureButton() {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA,
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
         btnLogout_M.visibility = View.INVISIBLE
+
         Thread {
             try {
                 mapFragment.onCreate(null)
@@ -138,6 +139,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         val history = History(this.dbData)
         val args = Bundle()
         args.putSerializable("history", history)
+        historyFragment = HistoryFragment()
         historyFragment.arguments = args
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
@@ -164,12 +166,10 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
                     profile = dataSnapshot.getValue(UserProfile::class.java) as UserProfile
                 }
             }
-
             override fun onCancelled(p0: DatabaseError) {
                 Log.i("ECOSNAP FIREBASE", "firebase database retrieving profile error: " + p0.toString())
             }
         })
-
         dataRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -201,19 +201,16 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
                 Log.i("ECOSNAP FIREBASE", "firebase database retrieving history item error: " + p0.toString())
             }
         })
-
         initCameraFragment()
+    }
 
-        btnLogout_M.setOnClickListener {
-            handleSignOut()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == 1) {
+            if (resultCode == RESULT_OK) {
+                initProfileFragment()
+            }
         }
     }
-
-    fun handleSignOut() {
-        fbAuth.signOut()
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-    }
-
 }
 

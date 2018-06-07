@@ -12,9 +12,10 @@ import com.ecosnap.Model.SettingsItem
 import com.ecosnap.Model.UserProfile
 import com.ecosnap.R
 import com.ecosnap.fragments.CredentialsFragment
+import com.ecosnap.fragments.ProfileFragment
 import kotlinx.android.synthetic.main.activity_settings.*
 
-class SettingsActivity: AppCompatActivity(), CredentialsFragment.OnCredentialsFragmentInteractionListener {
+class SettingsActivity: AppCompatActivity(), CredentialsFragment.OnCredentialsFragmentInteractionListener, ProfileFragment.OnProfileFragmentInteractionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,13 +27,11 @@ class SettingsActivity: AppCompatActivity(), CredentialsFragment.OnCredentialsFr
 
         var userProfile = intent.getSerializableExtra("user")
         userProfile = userProfile as UserProfile
-        println(userProfile.firstName)
-        val test = UserProfile(userProfile.firstName, userProfile.lastName, userProfile.email)
         settings_close.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-            this.startActivity(intent)
+            startActivityForResult(intent, 1)
         }
         settings_recycler_view.layoutManager = LinearLayoutManager(this)
-        settings_recycler_view.adapter = SettingsRecyclerViewAdapter(settings, test)
+        settings_recycler_view.adapter = SettingsRecyclerViewAdapter(settings, userProfile)
     }
 }

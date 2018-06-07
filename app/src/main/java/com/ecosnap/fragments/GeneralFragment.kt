@@ -6,8 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.app.Fragment
-import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,13 +15,10 @@ import com.ecosnap.Model.UserProfile
 import com.ecosnap.R
 import com.ecosnap.Views.SettingsActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_general.*
 import kotlinx.android.synthetic.main.fragment_general.view.*
-import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class GeneralFragment : Fragment() {
     private lateinit var fbAuth: FirebaseAuth
@@ -32,6 +27,7 @@ class GeneralFragment : Fragment() {
     private var SELECTED_PICTURE: Int? = null
     private lateinit var imgUri: Uri
     private lateinit var profile: UserProfile
+    private lateinit var profileRef: DatabaseReference
     private var listener: OnGeneralFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,19 +38,28 @@ class GeneralFragment : Fragment() {
             fbAuth = FirebaseAuth.getInstance()
             db = FirebaseDatabase.getInstance()
             userID = fbAuth.currentUser?.uid as String
-//            profileRef = db.getReference("users").child(userID).child("profile")
+            profileRef = db.getReference("users").child(userID).child("profile")
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_general, container, false)
+        arguments?.let {
+            profile = it.getSerializable("user") as UserProfile
+            SELECTED_PICTURE = 100
+            fbAuth = FirebaseAuth.getInstance()
+            db = FirebaseDatabase.getInstance()
+            userID = fbAuth.currentUser?.uid as String
+            profileRef = db.getReference("users").child(userID).child("profile")
+        }
+        view.bio_general.setText(profile.descr)
+        view.setting_General_IMG.setImageURI(Uri.parse(profile.imgpath))
         view.button_general.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, SELECTED_PICTURE!!)
         }
         view.btn_save_general.setOnClickListener {
-            println("testing/: " + bio_general.text.toString())
             insertNewUserIntoDatabase(db, profile.firstName, profile.lastName, profile.email, userID,
                     bio_general.text.toString(), imgUri.toString())
 
@@ -64,23 +69,18 @@ class GeneralFragment : Fragment() {
         }
         view.btn_cancel_general.setOnClickListener {
             val intent = Intent(view.context, SettingsActivity::class.java)
+            intent.putExtra("user", profile)
             view.context.startActivity(intent)
         }
-        // Inflate the layout for this fragment
         return view
-    }
-
-    private fun populateProfile(view: View) {
-        view.bio_general.setText(profile.descr)
-        view.img_profile_pict.setImageURI(Uri.parse(profile.imgpath))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == SELECTED_PICTURE) {
             imgUri = data.data
-            imageView_general.setImageURI(imgUri)
-//            Log.i("uri", imgUri.toString())
+            profile.imgpath = imgUri.toString()
+            setting_General_IMG.setImageURI(imgUri)
         }
     }
 
@@ -98,6 +98,5 @@ class GeneralFragment : Fragment() {
         listener = null
     }
 
-    interface OnGeneralFragmentInteractionListener {
-    }
+    interface OnGeneralFragmentInteractionListener {}
 }

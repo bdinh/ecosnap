@@ -32,6 +32,5 @@ class ProfilePagerAdapter(fm: FragmentManager?, profileData: ProfileChartData) :
             1 -> return "Week"
             else -> return "Month"
         }
-//        return super.getPageTitle(position)
     }
 }

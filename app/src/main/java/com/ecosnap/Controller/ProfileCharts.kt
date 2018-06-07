@@ -40,7 +40,7 @@ fun updateProfileWeekData (data: MutableList<DateHistory>): WeekChartData {
     while (dayCounter > -7) {
         val dbDate = getFormattedDate(date, "db")
         val chartDate = getFormattedDate(date, "week")
-        var dayData = updateProfileDayData(data, dbDate)
+        val dayData = updateProfileDayData(data, dbDate)
         when (dayCounter) {
             0 ->    { dayData.date = "Today" }
             -1 ->    { dayData.date = "Yesterday" }
@@ -65,7 +65,7 @@ fun updateProfileMonthData (data: MutableList<DateHistory>): MonthChartData {
 
     while (currMonth == dbDate.substring(4, 6)) {
         val chartDate = getFormattedDate(date, "month")
-        var dayData = updateProfileDayData(data, dbDate)
+        val dayData = updateProfileDayData(data, dbDate)
         dayData.date = chartDate
         monthData.monthData.add(dayData)
         dayCounter--

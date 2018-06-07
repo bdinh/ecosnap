@@ -2,8 +2,10 @@ package com.ecosnap.fragments
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,16 +24,21 @@ class ProfileFragment : Fragment() {
     private lateinit var profileData: ProfileChartData
     private var listener: OnProfileFragmentInteractionListener? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+    override fun onCreate(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         arguments?.let {
             profile = it.getSerializable("user") as UserProfile
             profileData = it.getSerializable("profileData") as ProfileChartData
         }
+    }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+      
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         view.btnSettings.setOnClickListener {
-            val intent = Intent(view.context, SettingsActivity::class.java)
+            val intent = Intent(activity, SettingsActivity::class.java)
+            intent.putExtra("user", profile)
             view.context.startActivity(intent)
         }
         val mAdapter = ProfilePagerAdapter(fragmentManager, profileData)
@@ -39,9 +46,10 @@ class ProfileFragment : Fragment() {
         view.tabs_profile.setupWithViewPager(view.vp_profile)
         view.txt_profile_title.text = profile.firstName + " " + profile.lastName
         view.txt_profile_bio.text = profile.descr
-        // view.img_profile_pict.setImageDrawable(profile.img)
+         view.img_profile_pict.setImageURI(Uri.parse(profile.imgpath))
         return view
     }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

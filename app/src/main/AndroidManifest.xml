@@ -46,8 +46,12 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity android:name=".Views.SettingsActivity" />
-        <activity android:name=".Views.SettingsController" />
+        <activity android:name=".Views.SettingsActivity"
+            android:screenOrientation="portrait"
+        />
+        <activity android:name=".Views.SettingsController"
+            android:screenOrientation="portrait"
+        />
     </application>
 
 </manifest>

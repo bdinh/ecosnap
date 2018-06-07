@@ -39,6 +39,7 @@ class ProfileFragment : Fragment() {
         view.btnSettings.setOnClickListener {
             val intent = Intent(activity, SettingsActivity::class.java)
             intent.putExtra("user", profile)
+            intent.putExtra("profileData", profileData)
             view.context.startActivity(intent)
         }
         val mAdapter = ProfilePagerAdapter(fragmentManager, profileData)

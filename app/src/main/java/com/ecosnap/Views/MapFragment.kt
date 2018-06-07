@@ -177,7 +177,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         task.addOnFailureListener {e ->
             if (e is ResolvableApiException) {
                 try {
-                    e.startResolutionForResult(MainActivity(), REQUEST_CHECK_SETTINGS)
+                    e.startResolutionForResult(thisActivity, REQUEST_CHECK_SETTINGS)
                 } catch (sendEx: IntentSender.SendIntentException) {
                     //Ignore the error
                 }

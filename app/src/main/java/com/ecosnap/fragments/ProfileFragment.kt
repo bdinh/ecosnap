@@ -20,24 +20,21 @@ import com.ecosnap.Model.UserProfile
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class ProfileFragment : Fragment() {
-    private val ITEMS = 5
     private lateinit var profile: UserProfile
     private lateinit var profileData: ProfileChartData
     private var listener: OnProfileFragmentInteractionListener? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreate(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
         arguments?.let {
             profile = it.getSerializable("user") as UserProfile
             profileData = it.getSerializable("profileData") as ProfileChartData
         }
-        println("profile on create")
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
+      
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         view.btnSettings.setOnClickListener {
             val intent = Intent(activity, SettingsActivity::class.java)
@@ -68,6 +65,5 @@ class ProfileFragment : Fragment() {
         listener = null
     }
 
-    interface OnProfileFragmentInteractionListener {
-    }
+    interface OnProfileFragmentInteractionListener {}
 }

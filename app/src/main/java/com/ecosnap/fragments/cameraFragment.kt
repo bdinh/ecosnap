@@ -213,7 +213,7 @@ class CameraFragment : Fragment() {
                 GRAPH_INPUT_NAME,
                 GRAPH_OUTPUT_NAME
         )
-
+        startBackgroundThread()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

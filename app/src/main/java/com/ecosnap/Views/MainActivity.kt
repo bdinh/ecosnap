@@ -9,6 +9,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import android.support.v4.content.ContextCompat
 import android.support.annotation.ColorRes
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.Fragment
 import android.util.Log
 import com.ecosnap.*
 import com.ecosnap.Controller.fbDatabase.insertHistoryItem
@@ -19,6 +20,9 @@ import com.ecosnap.R
 import com.ecosnap.fragments.CameraFragment
 import com.ecosnap.fragments.HistoryFragment
 import com.ecosnap.fragments.ProfileFragment
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -33,6 +37,11 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     private lateinit var profile: UserProfile
     private var dbData = mutableListOf<DateHistory>()
     private lateinit var profileChartData: ProfileChartData
+    private lateinit var mapFragment: MapFragment
+    private lateinit var historyFragment: HistoryFragment
+    private lateinit var cameraFragment: CameraFragment
+    private lateinit var profileFragment: ProfileFragment
+    private lateinit var currFragment: Fragment
 
     override fun onCaptureButton() {
     }
@@ -41,10 +50,22 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createBottomNav()
+        mapFragment = MapFragment()
+        historyFragment = HistoryFragment()
+        cameraFragment = CameraFragment()
+        profileFragment = ProfileFragment()
+        currFragment = cameraFragment
         initializeMainActivity()
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA,
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
         btnLogout_M.visibility = View.INVISIBLE
+        Thread {
+            try {
+                mapFragment.onCreate(null)
+                mapFragment.onPause()
+                mapFragment.onDestroy()
+            } catch (e: Exception) {}
+        }.start()
     }
 
     fun createBottomNav() {
@@ -60,7 +81,7 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         bottomNavigation.addItem(item3)
         bottomNavigation.addItem(item4)
 
-        bottomNavigation.currentItem = 0
+        bottomNavigation.currentItem = 2
         bottomNavigation.defaultBackgroundColor = fetchColor(R.color.colorPrimary)
         bottomNavigation.accentColor = fetchColor(R.color.navSelect)
         bottomNavigation.inactiveColor = fetchColor(R.color.navUnselect)
@@ -80,7 +101,9 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     fun initLocateFragment() {
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
-        transaction.replace(R.id.frame, MapFragment())
+        transaction.remove(currFragment)
+        currFragment = mapFragment
+        transaction.add(R.id.frame, mapFragment)
         transaction.commit()
     }
 
@@ -88,40 +111,39 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         val args = Bundle()
         args.putSerializable("user", profile)
         args.putSerializable("profileData", profileChartData)
-        val profileFragment = ProfileFragment()
+        profileFragment = ProfileFragment()
         profileFragment.arguments = args
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
-        transaction.replace(R.id.frame, profileFragment)
+        transaction.remove(currFragment)
+        currFragment = profileFragment
+        transaction.add(R.id.frame, profileFragment)
         transaction.commit()
     }
 
     fun initCameraFragment() {
         val args = Bundle()
         args.putString("userID", this.userID)
-        val cameraFragment = CameraFragment()
+        cameraFragment = CameraFragment()
         cameraFragment.arguments = args
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
-        transaction.replace(R.id.frame, cameraFragment)
+        transaction.remove(currFragment)
+        currFragment = cameraFragment
+        transaction.add(R.id.frame, cameraFragment)
         transaction.commit()
     }
 
     fun initHistoryFragment() {
         val history = History(this.dbData)
-//        val historyItem_1 = HistoryItem("Soda Can", R.drawable.sodacan, "74%", R.drawable.ic_pass)
-//        val historyItem_2 = HistoryItem("Glass Bottle", R.drawable.glassbottle, "87%", R.drawable.ic_pass)
-//        val historyItem_3 = HistoryItem("Stuffed Animal", R.drawable.teddybear, "91%", R.drawable.ic_reject)
-//        val dateHistory_1 = DateHistory("Today", arrayOf(historyItem_1, historyItem_2, historyItem_3))
-//        val dateHistory_2 = DateHistory("Yesterday", arrayOf(historyItem_1, historyItem_2, historyItem_3))
-//        val history = History(arrayOf(dateHistory_1, dateHistory_2))
         val args = Bundle()
         args.putSerializable("history", history)
-        val historyFragment = HistoryFragment()
         historyFragment.arguments = args
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
-        transaction.replace(R.id.frame, historyFragment)
+        transaction.remove(currFragment)
+        currFragment = historyFragment
+        transaction.add(R.id.frame, historyFragment)
         transaction.commit()
     }
 
@@ -179,6 +201,8 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
                 Log.i("ECOSNAP FIREBASE", "firebase database retrieving history item error: " + p0.toString())
             }
         })
+
+        initCameraFragment()
 
         btnLogout_M.setOnClickListener {
             handleSignOut()

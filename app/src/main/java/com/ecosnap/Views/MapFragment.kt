@@ -62,6 +62,19 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         return view
     }
 
+//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+//        super.onViewStateRestored(savedInstanceState)
+//        mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+//        if (mapFragment == null) {
+//            var fm = fragmentManager
+//            var ft = fm?.beginTransaction()
+//            mapFragment = SupportMapFragment.newInstance()
+//            ft?.replace(R.id.map, mapFragment)?.commit()
+//        }
+//        mapFragment?.getMapAsync(this)
+//    }
+
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
@@ -104,7 +117,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
                     lastLocation = location
                     var currentLatLng = LatLng(location.latitude, location.longitude)
                     currLocation = currentLatLng
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
                     getNearByRecyclingCenters(currLocation)
                 }
             }
@@ -177,7 +190,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         task.addOnFailureListener {e ->
             if (e is ResolvableApiException) {
                 try {
-                    e.startResolutionForResult(MainActivity(), REQUEST_CHECK_SETTINGS)
+                    e.startResolutionForResult(thisActivity, REQUEST_CHECK_SETTINGS)
                 } catch (sendEx: IntentSender.SendIntentException) {
                     //Ignore the error
                 }

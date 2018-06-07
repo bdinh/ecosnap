@@ -100,27 +100,31 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initLocateFragment() {
-        val fm = supportFragmentManager
-        val transaction = fm.beginTransaction()
-        mapFragment = MapFragment()
-        transaction.remove(currFragment)
-        currFragment = mapFragment
-        transaction.add(R.id.frame, mapFragment)
-        transaction.commit()
+        if (bottom_navigation.currentItem != 0) {
+            val fm = supportFragmentManager
+            val transaction = fm.beginTransaction()
+            mapFragment = MapFragment()
+            transaction.remove(currFragment)
+            currFragment = mapFragment
+            transaction.add(R.id.frame, mapFragment)
+            transaction.commit()
+        }
     }
 
     fun initProfileFragment() {
-        val args = Bundle()
-        args.putSerializable("user", profile)
-        args.putSerializable("profileData", profileChartData)
-        profileFragment = ProfileFragment()
-        profileFragment.arguments = args
-        val fm = supportFragmentManager
-        val transaction = fm.beginTransaction()
-        transaction.remove(currFragment)
-        currFragment = profileFragment
-        transaction.add(R.id.frame, profileFragment)
-        transaction.commit()
+        if (bottom_navigation.currentItem != 3) {
+            val args = Bundle()
+            args.putSerializable("user", profile)
+            args.putSerializable("profileData", profileChartData)
+            profileFragment = ProfileFragment()
+            profileFragment.arguments = args
+            val fm = supportFragmentManager
+            val transaction = fm.beginTransaction()
+            transaction.remove(currFragment)
+            currFragment = profileFragment
+            transaction.add(R.id.frame, profileFragment)
+            transaction.commit()
+        }
     }
 
     fun initCameraFragment() {
@@ -137,17 +141,19 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     }
 
     fun initHistoryFragment() {
-        val history = History(this.dbData)
-        val args = Bundle()
-        args.putSerializable("history", history)
-        historyFragment = HistoryFragment()
-        historyFragment.arguments = args
-        val fm = supportFragmentManager
-        val transaction = fm.beginTransaction()
-        transaction.remove(currFragment)
-        currFragment = historyFragment
-        transaction.add(R.id.frame, historyFragment)
-        transaction.commit()
+        if (bottom_navigation.currentItem != 1) {
+            val history = History(this.dbData)
+            val args = Bundle()
+            args.putSerializable("history", history)
+            historyFragment = HistoryFragment()
+            historyFragment.arguments = args
+            val fm = supportFragmentManager
+            val transaction = fm.beginTransaction()
+            transaction.remove(currFragment)
+            currFragment = historyFragment
+            transaction.add(R.id.frame, historyFragment)
+            transaction.commit()
+        }
     }
 
     fun fetchColor(@ColorRes color: Int): Int {

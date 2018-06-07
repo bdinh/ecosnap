@@ -9,6 +9,7 @@ import android.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.ecosnap.Controller.fbDatabase.insertNewUserIntoDatabase
 import com.ecosnap.Model.UserProfile
 
@@ -54,7 +55,9 @@ class GeneralFragment : Fragment() {
             profileRef = db.getReference("users").child(userID).child("profile")
         }
         view.bio_general.setText(profile.descr)
-        view.setting_General_IMG.setImageURI(Uri.parse(profile.imgpath))
+        val uri = Uri.parse(profile.imgpath)
+        println(profile.imgpath + " LOLOL")
+        Glide.with(view.context).load(uri).into(view.setting_General_IMG)
         view.button_general.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, SELECTED_PICTURE!!)

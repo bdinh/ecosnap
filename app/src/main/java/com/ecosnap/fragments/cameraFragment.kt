@@ -417,4 +417,5 @@ class CameraFragment : Fragment() {
         handler.post(runnable)
     }
 
+
 }

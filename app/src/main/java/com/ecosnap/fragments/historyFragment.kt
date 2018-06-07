@@ -31,8 +31,13 @@ class HistoryFragment : Fragment() {
         }
 
         val view = inflater.inflate(R.layout.history_view_list, container, false) as RecyclerView
-        view.layoutManager = LinearLayoutManager(context)
+        val layoutManager = LinearLayoutManager(context)
+        view.layoutManager = layoutManager
         view.adapter = SectionHistoryRecyclerViewAdapter(context!!, this.history as History)
+        view.setHasFixedSize(true)
+        view.setItemViewCacheSize(5)
+        view.isDrawingCacheEnabled = true
+        view.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
         return view
     }
 
@@ -51,6 +56,11 @@ class HistoryFragment : Fragment() {
     }
 
     fun onHistoryDetailedView() {
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
 
     }
 

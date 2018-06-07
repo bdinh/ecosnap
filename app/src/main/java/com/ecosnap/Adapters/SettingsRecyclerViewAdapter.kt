@@ -28,6 +28,7 @@ class SettingsRecyclerViewAdapter(val settings: com.ecosnap.Model.Settings, val 
         holder.view.settings_item_title.setText(item.title)
         holder.title = item.title
     }
+
 }
 
 class CustomSettingsViewItemHolder(val view: View, var title: String, val profile: UserProfile) : RecyclerView.ViewHolder(view) {

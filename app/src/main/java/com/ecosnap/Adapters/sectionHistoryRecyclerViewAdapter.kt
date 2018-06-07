@@ -29,11 +29,15 @@ class SectionHistoryRecyclerViewAdapter(val context: Context, val historyData: H
     override fun onBindViewHolder(holder: CustomSectionHistoryViewHolder, position: Int) {
         val dateHistory = historyData.data.get(position)
         val dateString = dateHistory.label
-        val p = PrettyTime()
-        val format = SimpleDateFormat("yyyyMMdd", Locale.ENGLISH)
-        val date = format.parse(dateString)
-        val prettyDate = p.format(date)
-        holder.section_history_text_label.setText(prettyDate)
+        if (dateString == SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())) {
+            holder.section_history_text_label.setText("Today")
+        } else {
+            val p = PrettyTime()
+            val format = SimpleDateFormat("yyyyMMdd", Locale.ENGLISH)
+            val date = format.parse(dateString)
+            val prettyDate = p.format(date)
+            holder.section_history_text_label.setText(prettyDate)
+        }
         holder.section_history_recycler_view.layoutManager = GridLayoutManager(this.context, 2)
         holder.section_history_recycler_view.adapter = HistoryRecyclerViewAdapter(dateHistory)
     }

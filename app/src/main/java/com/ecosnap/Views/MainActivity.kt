@@ -25,9 +25,10 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.squareup.leakcanary.LeakCanary
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInteractionListener, MapFragment.OnFragmentInteractionListener,
+class MainActivity : AppCompatActivity(),ProfileFragment.OnProfileFragmentInteractionListener, MapFragment.OnFragmentInteractionListener,
         HistoryFragment.OnHistoryFragmentInteractionListener, CameraFragment.OnCameraFragmentInteractionListener {
     private lateinit var fbAuth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
@@ -48,6 +49,12 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return
+        }
+        LeakCanary.install(application)
+
         setContentView(R.layout.activity_main)
         createBottomNav()
         mapFragment = MapFragment()

@@ -7,5 +7,6 @@ class UserProfile (
     val lastName: String = "",
     val email: String = ""
 ) : Serializable {
-    val descr: String = "Recycling newbie here! It’s about time that I started to care."
+    var descr: String = "Recycling newbie here! It’s about time that I started to care."
+    var imgpath: String = ""
 }

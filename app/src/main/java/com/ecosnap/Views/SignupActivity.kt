@@ -51,7 +51,7 @@ class SignupActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         val db = FirebaseDatabase.getInstance()
                         val userID = fbAuth.currentUser?.uid as String
-                        insertNewUserIntoDatabase(db, firstName, lastName, email, userID)
+                        insertNewUserIntoDatabase(db, firstName, lastName, email, userID, "", "")
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     } else {

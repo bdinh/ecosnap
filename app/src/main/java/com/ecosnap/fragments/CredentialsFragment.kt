@@ -84,9 +84,9 @@ class CredentialsFragment : Fragment() {
                 }
             }
         }
-        profileRef.child("firstName").setValue(view.creds_first_name.getText().toString());
-        profileRef.child("lastName").setValue(view.creds_last_name.getText().toString());
-        profileRef.child("email").setValue(view.creds_Email.getText().toString());
+        profileRef.child("firstName").setValue(view.creds_first_name.getText().toString())
+        profileRef.child("lastName").setValue(view.creds_last_name.getText().toString())
+        profileRef.child("email").setValue(view.creds_Email.getText().toString())
     }
 
     override fun onDetach() {
@@ -103,7 +103,6 @@ class CredentialsFragment : Fragment() {
     }
 
     interface OnCredentialsFragmentInteractionListener {
-        fun onCredentialsSelected()
     }
 
 }

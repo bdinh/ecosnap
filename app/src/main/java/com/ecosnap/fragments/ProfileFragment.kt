@@ -24,8 +24,8 @@ class ProfileFragment : Fragment() {
     private lateinit var profileData: ProfileChartData
     private var listener: OnProfileFragmentInteractionListener? = null
 
-    override fun onCreate(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         arguments?.let {
             profile = it.getSerializable("user") as UserProfile
             profileData = it.getSerializable("profileData") as ProfileChartData

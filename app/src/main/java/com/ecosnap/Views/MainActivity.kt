@@ -37,11 +37,11 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
     private lateinit var profile: UserProfile
     private var dbData = mutableListOf<DateHistory>()
     private lateinit var profileChartData: ProfileChartData
-    private lateinit var mapFragment:MapFragment
+    private lateinit var mapFragment: MapFragment
     private lateinit var historyFragment: HistoryFragment
     private lateinit var cameraFragment: CameraFragment
     private lateinit var profileFragment: ProfileFragment
-    private var currFragment: Fragment = CameraFragment()
+    private lateinit var currFragment: Fragment
 
     override fun onCaptureButton() {
     }
@@ -50,16 +50,20 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createBottomNav()
+        mapFragment = MapFragment()
+        historyFragment = HistoryFragment()
+        cameraFragment = CameraFragment()
+        profileFragment = ProfileFragment()
+        currFragment = cameraFragment
         initializeMainActivity()
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA,
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
         btnLogout_M.visibility = View.INVISIBLE
         Thread {
             try {
-                val map = MapFragment()
-                map.onCreate(null)
-                map.onPause()
-                map.onDestroy()
+                mapFragment.onCreate(null)
+                mapFragment.onPause()
+                mapFragment.onDestroy()
             } catch (e: Exception) {}
         }.start()
     }
@@ -96,7 +100,6 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
 
     fun initLocateFragment() {
         val fm = supportFragmentManager
-        mapFragment = MapFragment()
         val transaction = fm.beginTransaction()
         transaction.remove(currFragment)
         currFragment = mapFragment
@@ -135,7 +138,6 @@ class MainActivity : AppCompatActivity(), ProfileFragment.OnProfileFragmentInter
         val history = History(this.dbData)
         val args = Bundle()
         args.putSerializable("history", history)
-        historyFragment = HistoryFragment()
         historyFragment.arguments = args
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()

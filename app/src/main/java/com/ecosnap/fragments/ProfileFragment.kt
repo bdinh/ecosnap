@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.ecosnap.Model.Profile
 import com.ecosnap.R
 import com.ecosnap.Adapters.ProfilePagerAdapter
@@ -48,7 +49,8 @@ class ProfileFragment : Fragment() {
         view.tabs_profile.setupWithViewPager(view.vp_profile)
         view.txt_profile_title.text = profile.firstName + " " + profile.lastName
         view.txt_profile_bio.text = profile.descr
-        view.img_profile_pict.setImageURI(Uri.parse(profile.imgpath))
+        val uri = Uri.parse(profile.imgpath)
+        Glide.with(view.context).load(uri).into(view.img_profile_pict)
         return view
     }
 

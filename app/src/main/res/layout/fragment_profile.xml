@@ -6,15 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ProfileFragment">
 
-
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/img_profile_pict"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:contentDescription="profile pict"
         android:src="@mipmap/ic_launcher_round"
+        app:civ_border_color="@color/offWhite"
+        app:civ_border_width="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +32,7 @@
     <TextView
         android:id="@+id/txt_profile_bio"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
@@ -97,7 +97,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_settings"
-        app:layout_constraintBottom_toBottomOf="@+id/txt_profile_bio"
+        app:layout_constraintBottom_toBottomOf="@+id/img_profile_pict"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/txt_profile_title" />
 

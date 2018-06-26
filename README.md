@@ -2,7 +2,7 @@
 
 Environmentally conscious Android application that utilizes Deep Learning to classify whether an object is recyclable or non-recyclable. 
 
-(Insert Logo and Name Here)
+![alt text](https://github.com/bdinh/ecosnap/blob/master/wireframes/Logo_800x.png "EcoSnap")
 
 ## Project Description 
 
